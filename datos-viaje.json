@@ -1,0 +1,109 @@
+{
+  "sitio": {
+    "titulo": "Islandia · 5 días de hielo y fuego",
+    "subtitulo": "Glaciares, cascadas, arena negra y lava. Un diario escrito cada noche desde el fin del mundo.",
+    "inicio": "2027-01-30",
+    "fin": "2027-02-03",
+    "autor": "codex2856",
+    "github": "https://github.com/codex2856"
+  },
+
+  "repositorio": {
+    "_nota": "Sirve para que la web encuentre sola las fotos que subas desde el móvil a fotos/dia-N/ (usa la API pública de GitHub).",
+    "usuario": "codex2856",
+    "nombre": "Viaje-a-islandia",
+    "rama": "main"
+  },
+
+  "ruta": {
+    "_nota": "Puntos [latitud, longitud] por los que pasa la línea del mapa, en orden. Aproximan las carreteras reales.",
+    "puntos": [
+      [63.9850, -22.6056], [64.0010, -22.5200], [64.0350, -22.3000], [64.0620, -22.0900],
+      [64.1000, -21.9900], [64.1466, -21.9426],
+      [64.1520, -21.7700], [64.1750, -21.5800], [64.2050, -21.4000], [64.2400, -21.2200],
+      [64.2559, -21.1299],
+      [64.2350, -20.9500], [64.2160, -20.7300], [64.2500, -20.5200], [64.2900, -20.3800],
+      [64.3104, -20.3024], [64.3271, -20.1199], [64.3104, -20.3024],
+      [64.2200, -20.3300], [64.1378, -20.3093],
+      [64.0500, -20.3300], [63.9500, -20.3700], [63.8358, -20.3992],
+      [63.7900, -20.3000], [63.7520, -20.2240], [63.6900, -20.1000], [63.6156, -19.9886],
+      [63.5800, -19.8200], [63.5500, -19.6500], [63.5321, -19.5114],
+      [63.4900, -19.3500], [63.4500, -19.1500], [63.4190, -19.0090],
+      [63.4044, -19.0447], [63.4022, -19.1306],
+      [63.4500, -19.2000], [63.5321, -19.5114], [63.6156, -19.9886], [63.7520, -20.2240],
+      [63.8358, -20.3992], [63.9331, -20.9970], [64.0000, -21.1900], [64.0500, -21.4500],
+      [64.1100, -21.7500], [64.1466, -21.9426],
+      [64.1504, -21.9325], [64.1417, -21.9266],
+      [64.1000, -21.9900], [64.0620, -22.0900], [64.0350, -22.3000], [63.9850, -22.6056]
+    ]
+  },
+
+  "enlaces": [
+    { "nombre": "road.is", "descripcion": "Estado de las carreteras en tiempo real", "url": "https://www.road.is" },
+    { "nombre": "vedur.is", "descripcion": "Previsión del tiempo y de auroras", "url": "https://en.vedur.is" },
+    { "nombre": "safetravel.is", "descripcion": "Alertas de seguridad para viajeros", "url": "https://safetravel.is" }
+  ],
+
+  "que_llevar": [
+    {
+      "categoria": "Ropa",
+      "items": [
+        "Capa base térmica (merino)",
+        "Forro polar o plumón ligero",
+        "Chaqueta y pantalón impermeables",
+        "Botas de montaña impermeables",
+        "Gorro, guantes y braga de cuello",
+        "Calcetines de lana (3 pares)",
+        "Bañador para las lagunas"
+      ]
+    },
+    {
+      "categoria": "Equipo",
+      "items": [
+        "Crampones ligeros (microspikes)",
+        "Frontal con pilas de repuesto",
+        "Batería externa y cargador de coche",
+        "Trípode pequeño para la aurora",
+        "Gafas de sol (la nieve deslumbra)"
+      ]
+    },
+    {
+      "categoria": "Documentos",
+      "items": [
+        "DNI o pasaporte",
+        "Carnet de conducir",
+        "Reserva del coche de alquiler",
+        "Reservas de hoteles y Lava Show",
+        "Tarjeta de crédito con PIN"
+      ]
+    }
+  ],
+
+  "resumen": {
+    "_nota": "Rellena esto al volver. publicado: false muestra el resumen como borrador.",
+    "publicado": false,
+    "intro": "Cinco días, unos 700 kilómetros y dos elementos que no se llevan nada bien: el hielo y el fuego. Esto es lo que me llevo.",
+    "lo_mejor": [
+      { "titulo": "Strokkur al mediodía", "texto": "El géiser estallando contra un cielo rosa que nunca termina de ser de día." },
+      { "titulo": "Seljalandsfoss congelada", "texto": "Estalactitas de hielo del tamaño de una persona colgando junto a la cascada." },
+      { "titulo": "Lava a 1100 °C", "texto": "El Lava Show de Vík: el calor en la cara mientras fuera nieva." }
+    ],
+    "moneda": "€",
+    "costes": [
+      { "concepto": "Vuelos ida y vuelta", "previsto": 320, "real": null },
+      { "concepto": "Coche de alquiler (4×4, 5 días)", "previsto": 380, "real": null },
+      { "concepto": "Alojamiento (4 noches)", "previsto": 620, "real": null },
+      { "concepto": "Gasolina", "previsto": 140, "real": null },
+      { "concepto": "Comida y supermercado", "previsto": 260, "real": null },
+      { "concepto": "Secret Lagoon + Lava Show", "previsto": 95, "real": null }
+    ],
+    "consejos": [
+      "Revisa road.is cada mañana antes de salir: en invierno cierran tramos sin aviso.",
+      "Hay apenas 7 horas de luz: sal de noche y llega a cada parada con el sol bajo.",
+      "Llena el depósito cuando veas una gasolinera, aunque te quede medio.",
+      "Compra en Bónus o Krónan: comer fuera cuesta el triple.",
+      "Nunca le des la espalda al mar en Reynisfjara."
+    ],
+    "top_fotos": []
+  }
+}

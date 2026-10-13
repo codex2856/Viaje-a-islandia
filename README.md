@@ -1,1 +1,160 @@
-# Viaje-a-islandia
+# Islandia · 5 días de hielo y fuego
+
+Blog estático del viaje a Islandia (30 de enero – 3 de febrero de 2027).
+HTML, CSS y JavaScript puro: **sin frameworks y sin paso de build**.
+
+🌐 Web: https://codex2856.github.io/Viaje-a-islandia/
+
+---
+
+## Estructura
+
+```
+/
+├── index.html          Portada: hero, mapa, antes del viaje, los 5 días, resumen
+├── dia.html            Página de un día (dia.html?n=1 … ?n=5)
+├── datos-viaje.json    Costes, qué llevar, enlaces, resumen final y trazado de la ruta
+├── entradas/           Un Markdown por día (dia-1.md … dia-5.md)
+├── fotos/
+│   ├── portada.jpg     (opcional) fondo del hero
+│   ├── og.jpg          imagen al compartir el enlace
+│   └── dia-1/ … dia-5/ fotos de cada día + fotos.json
+├── css/estilos.css     Todo el diseño (con índice al principio)
+├── js/
+│   ├── datos.js        Lee JSON y Markdown (parser de front matter y Markdown hecho a mano)
+│   ├── efectos.js      Scroll, parallax, cursor, transiciones, menú inferior
+│   ├── nieve.js        Nieve en <canvas>
+│   ├── mapa.js         Mapas Leaflet (se cargan solo cuando van a verse)
+│   ├── galeria.js      Mosaico + visor con gestos
+│   ├── inicio.js       Lógica de index.html
+│   └── dia.js          Lógica de dia.html
+├── generar.js          (opcional) comprime fotos, crea WebP y fotos.json
+└── .nojekyll           Evita que GitHub Pages procese los .md con Jekyll
+```
+
+## 1. Probarlo en local
+
+Los navegadores no dejan leer archivos con `fetch()` si abres `index.html` con doble clic
+(`file://`), así que hace falta un servidor local. Cualquiera de estos vale:
+
+```bash
+# Opción A (Node)
+npx http-server -c-1 -p 8080 .
+# Opción B (Python)
+python3 -m http.server 8080
+# Opción C: extensión "Live Server" de VS Code → botón "Go Live"
+```
+
+Abre http://localhost:8080.
+
+Trucos para probar:
+
+- `dia.html?n=2&borrador=1` → enseña el texto aunque el día tenga `publicado: false`.
+- `index.html?hoy=2027-01-31` → simula esa fecha (la cuenta atrás pasa a "Día 2 de 5").
+
+## 2. Publicar en GitHub Pages
+
+1. Sube el código a la rama `main` del repositorio `codex2856/Viaje-a-islandia`.
+2. En GitHub: **Settings → Pages**.
+3. En *Build and deployment*: **Source = Deploy from a branch**, **Branch = `main`**, carpeta **`/ (root)`** → *Save*.
+4. Espera 1–2 minutos. La web queda en `https://codex2856.github.io/Viaje-a-islandia/`.
+
+Cada vez que hagas un commit en `main`, GitHub vuelve a publicar solo (tarda ~1 minuto).
+
+> Si cambias el nombre del repositorio, actualiza las URLs absolutas de `index.html`
+> (`og:url`, `og:image`, `canonical`), `dia.html`, `robots.txt`, `sitemap.xml` y el bloque
+> `"repositorio"` de `datos-viaje.json`.
+
+## 3. Escribir una entrada cada noche desde el móvil
+
+Todo se hace desde el navegador del móvil en **github.com** (no hace falta ordenador):
+
+**Texto**
+
+1. Entra en el repositorio → carpeta `entradas` → `dia-N.md`.
+2. Pulsa el lápiz ✏️ (*Edit this file*).
+3. Escribe debajo del segundo `---` en Markdown:
+   - `## Título de apartado`
+   - `**negrita**`, `*cursiva*`, `[enlace](https://…)`
+   - `> cita destacada`
+   - `- elemento de lista`
+   - `![pie de foto](fotos/dia-N/foto.jpg)` para meter una foto dentro del texto
+4. Cambia `publicado: false` → `publicado: true` y revisa `lo_mejor`.
+5. Pulsa **Commit changes**. En un minuto está publicado.
+
+**Fotos**
+
+1. Ve a la carpeta `fotos/dia-N` → **Add file → Upload files** → elige las fotos → *Commit*.
+2. Ya está: la web encuentra sola las fotos de la carpeta (usa la API pública de GitHub).
+3. *(Opcional)* si quieres decidir el orden y poner pies de foto, añádelas al front matter:
+
+   ```yaml
+   fotos:
+     - archivo: "IMG_1234.jpg"
+       pie: "Strokkur a punto de estallar"
+     - archivo: "IMG_1240.jpg"
+       pie: "Gullfoss medio congelada"
+   portada: "IMG_1240.jpg"   # foto de cabecera del día (si no, usa la primera)
+   ```
+
+**Antes de publicar** puedes revisar el texto en `dia.html?n=N&borrador=1`.
+
+> 📱 En iPhone, ve a *Ajustes → Cámara → Formatos → Más compatible* para que las fotos
+> sean JPG y no HEIC (los navegadores no muestran HEIC).
+
+### Campos del front matter
+
+| Campo | Ejemplo | Para qué sirve |
+|---|---|---|
+| `titulo` | `"El Círculo Dorado"` | Título del día |
+| `fecha` | `2027-01-31` | Fecha (AAAA-MM-DD) |
+| `lugar` | `"Þingvellir · Geysir"` | Subtítulo con el lugar |
+| `lat`, `lng` | `64.31`, `-20.30` | Punto principal del día |
+| `amanecer`, `atardecer` | `"10:05"` | Gráfico de horas de luz |
+| `lo_mejor` | `"Ver a Strokkur…"` | Cita destacada en la tarjeta |
+| `resumen` | `"Dos placas…"` | Texto corto del itinerario |
+| `publicado` | `true` / `false` | `false` = tarjeta "Próximamente" con escarcha |
+| `paradas` | lista | Marcadores del mapa (`nombre`, `lat`, `lng`, `confirmada`) |
+| `fotos` | lista (opcional) | Orden y pies de foto |
+| `portada` | `"foto.jpg"` (opcional) | Foto de cabecera del día |
+
+Con `confirmada: false` la parada sale en el mapa con borde discontinuo y más transparente.
+
+### datos-viaje.json
+
+Costes (`previsto` / `real`; deja `real: null` hasta saberlo), lista de *qué llevar*,
+enlaces útiles, textos del resumen final (`publicado: true` quita la etiqueta de borrador),
+`top_fotos` (`[{ "src": "fotos/dia-3/IMG_1.jpg", "pie": "…" }]`) y los puntos de la ruta.
+Cuidado con las comas: si el JSON tiene un error, la consola del navegador lo indica.
+
+## 4. Fotos: optimizarlas (opcional, desde un ordenador)
+
+```bash
+npm install        # instala sharp (solo la primera vez)
+node generar.js
+```
+
+Reduce las fotos enormes del móvil a 2000 px (guardando el original en `fotos/originales/`,
+que git ignora), crea versiones WebP de 800 y 1600 px y escribe `fotos/dia-N/fotos.json`
+con tamaños y versiones. La web usa entonces `<picture>` + `srcset`, así el móvil descarga
+la versión pequeña. Sin este paso todo funciona igual, solo que con las fotos originales.
+
+## Fotos que conviene tener preparadas
+
+| Foto | Tamaño recomendado | Notas |
+|---|---|---|
+| `fotos/portada.jpg` | 2400 × 1600 px (horizontal 3:2), < 600 KB | Paisaje amplio con cielo; el título va encima, mejor con zona central limpia y oscura |
+| Una por día (`portada:` en el front matter) | 2000 × 1333 px (3:2) | Se recorta en horizontal en la cabecera del día |
+| Galería | lado mayor 2000 px | Mezcla verticales y horizontales para que el mosaico luzca |
+| `fotos/og.jpg` | 1200 × 630 px | Ya incluida (generada a partir del hero); cámbiala por una foto real si quieres |
+
+Ideas: día 1 la carretera de lava hacia Reikiavik, día 2 Strokkur o Gullfoss, día 3
+Skógafoss o la lava del show, día 4 las columnas de basalto de Reynisfjara, día 5 Reikiavik
+desde Hallgrímskirkja.
+
+## Accesibilidad y rendimiento
+
+- `prefers-reduced-motion`: sin nieve, sin parallax y sin animaciones.
+- Contraste AA, foco visible, enlace "saltar al contenido", visor con `<dialog>`.
+- Leaflet y las teselas se cargan solo cuando el mapa está a punto de verse.
+- La nieve se pausa si la pestaña está oculta o el hero no se ve.
