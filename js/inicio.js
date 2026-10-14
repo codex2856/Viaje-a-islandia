@@ -14,7 +14,8 @@ import {
 } from './datos.js';
 import { alCargar, iniciarEfectosComunes, observarReveal } from './efectos.js';
 import { iniciarCielo } from './cielo.js';
-import { crearMapaRuta, crearMiniMapa, cuandoSeaVisible, COLOR_DIA } from './mapa.js';
+import { cuandoSeaVisible, COLOR_DIA } from './mapa.js';
+import { crearMapaIlustrado } from './mapa-ilustrado.js';
 import { pintarCredito, ponerFondo } from './galeria.js';
 
 iniciarEfectosComunes();
@@ -180,11 +181,15 @@ async function iniciar() {
   const totalParadas = entradas.reduce((s, e) => s + e.paradas.length, 0);
   document.querySelector('[data-cifra="paradas"]').textContent = totalParadas;
 
-  // Los mapas (y Leaflet) se cargan solo cuando van a verse
+  // Mapas ilustrados (la imagen de Islandia con la ruta encima). Se crean al acercarse a ellos.
   const mapaRuta = document.getElementById('mapa-ruta');
-  cuandoSeaVisible(mapaRuta, () => crearMapaRuta(mapaRuta, entradas, datos).catch(errorMapa(mapaRuta)));
+  cuandoSeaVisible(mapaRuta, () => {
+    try { crearMapaIlustrado(mapaRuta, entradas, datos); } catch (error) { errorMapa(mapaRuta)(error); }
+  });
   const miniMapa = document.getElementById('mini-mapa');
-  cuandoSeaVisible(miniMapa, () => crearMiniMapa(miniMapa, entradas, datos).catch(errorMapa(miniMapa)));
+  cuandoSeaVisible(miniMapa, () => {
+    try { crearMapaIlustrado(miniMapa, entradas, datos, { mini: true }); } catch (error) { errorMapa(miniMapa)(error); }
+  });
 }
 
 function errorMapa(elemento) {

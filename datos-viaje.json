@@ -44,6 +44,18 @@
     ]
   },
 
+  "mapa_ilustrado": {
+    "_nota": "Mapa dibujado de la pestaña El viaje. 'transformacion' convierte latitud/longitud en píxeles de la imagen: x = a·lng + b·lat + c (igual para y). Se calculó con puntos de referencia del dibujo (lago de Þingvellir, glaciares, Reykjanes, Vík). Si cambias la imagen, hay que recalcularla.",
+    "imagen": "fotos/mapa-ilustrado.jpg",
+    "imagen_webp": "fotos/mapa-ilustrado.webp",
+    "ancho": 1376,
+    "alto": 768,
+    "transformacion": {
+      "x": [103.338, -1.748, 2760.956],
+      "y": [5.642, -186.243, 12605.517]
+    }
+  },
+
   "enlaces": [
     { "nombre": "road.is", "descripcion": "Estado de las carreteras en tiempo real", "url": "https://www.road.is" },
     { "nombre": "vedur.is", "descripcion": "Previsión del tiempo y de auroras", "url": "https://en.vedur.is" },

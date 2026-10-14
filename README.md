@@ -26,7 +26,8 @@ HTML, CSS y JavaScript puro: **sin frameworks y sin paso de build**.
 │   ├── datos.js        Lee JSON y Markdown (parser de front matter y Markdown hecho a mano)
 │   ├── efectos.js      Scroll, parallax, cursor, transiciones, menú inferior
 │   ├── cielo.js        Aurora, estrellas y nieve en <canvas> (un solo bucle a 20 fps)
-│   ├── mapa.js         Mapas Leaflet (se cargan solo cuando van a verse)
+│   ├── mapa.js         Mapas Leaflet de la página de cada día (se cargan solo al verse)
+│   ├── mapa-ilustrado.js  Mapa dibujado de la pestaña «El viaje», con la ruta encima
 │   ├── galeria.js      Mosaico + visor con gestos
 │   ├── inicio.js       Lógica de index.html
 │   ├── diario.js       Lógica de diario.html
@@ -157,6 +158,14 @@ Para usar **tus** fotos:
 - Fotos favoritas del resumen: en `datos-viaje.json`, en `top_fotos`.
 
 Si un nombre de Commons está mal escrito, la foto simplemente no aparece (no se rompe nada).
+
+## El mapa ilustrado
+
+El mapa de «El viaje» es una ilustración (`fotos/mapa-ilustrado.jpg`, hecha con Gemini). La ruta
+y los puntos se dibujan encima con las **coordenadas reales** de las paradas de cada día: en
+`datos-viaje.json` → `mapa_ilustrado.transformacion` está la fórmula que convierte latitud y
+longitud en píxeles de esa imagen. Si añades una parada en un `dia-N.md`, aparece sola en el mapa.
+Si cambias la imagen por otra, hay que recalcular esa transformación.
 
 ## Diseño mixto: noche → día → noche
 

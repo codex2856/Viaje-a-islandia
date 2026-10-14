@@ -2296,3 +2296,129 @@ body.pagina-saliendo { opacity: 0; filter: blur(4px); }
 .al-diario .antetitulo { justify-content: center; }
 .al-diario .seccion__intro { margin-inline: auto; }
 .al-diario .boton { margin-top: 2rem; }
+
+/* =====================================================================
+   17. MAPA ILUSTRADO (js/mapa-ilustrado.js)
+   ---------------------------------------------------------------------
+   Las medidas en "px" dentro del SVG se multiplican por --u (unidades de
+   la imagen por píxel de pantalla) para que no cambien con el zoom.
+   ===================================================================== */
+.mapa-ilustrado.mapa--ruta { height: auto; aspect-ratio: 1 / 1; }
+@media (min-width: 700px) { .mapa-ilustrado.mapa--ruta { aspect-ratio: 16 / 9; } }
+.mapa-ilustrado.mapa--mini { height: 200px; }
+.mapa-ilustrado__svg { display: block; width: 100%; height: 100%; user-select: none; }
+.mapa-ilustrado__svg image { opacity: 0; transition: opacity 1.2s ease; }
+.mapa-ilustrado--listo .mapa-ilustrado__svg image { opacity: 1; }
+
+.mi-ruta {
+  fill: none;
+  stroke: var(--glaciar);
+  stroke-width: calc(3px * var(--u, 1));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.5s;
+}
+.mi-ruta--halo { stroke-width: calc(11px * var(--u, 1)); opacity: 0.22; }
+.mapa-ilustrado--dia .mi-ruta { opacity: 0.3; }
+.mapa-ilustrado--dia .mi-ruta--halo { opacity: 0.08; }
+.mi-tramo {
+  fill: none;
+  stroke: var(--color);
+  stroke-width: calc(4px * var(--u, 1));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.mi-tramo--activo { opacity: 1; }
+
+.mi-marcador { opacity: 0; transition: opacity 0.6s var(--suave); cursor: pointer; outline: none; }
+.mapa-ilustrado--marcadores .mi-marcador { opacity: 1; transition-delay: var(--retraso); }
+.mapa--mini .mi-marcador { opacity: 1; cursor: default; }
+.mi-marcador__nucleo { fill: #0b0f14; stroke: var(--color); stroke-width: 2.5; transition: fill 0.3s, stroke-width 0.3s; }
+.mi-marcador__pulso {
+  fill: var(--color);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mapa-ilustrado--marcadores .mi-marcador__pulso { animation: pulso-mi 2.6s ease-out 3; animation-delay: calc(var(--retraso) + 0.6s); }
+@keyframes pulso-mi {
+  0% { transform: scale(0.4); opacity: 0.55; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+.mi-marcador__toque { fill: transparent; }
+.mi-marcador--pendiente .mi-marcador__nucleo { stroke-dasharray: 3 2.5; opacity: 0.75; }
+.mi-marcador--pendiente .mi-marcador__pulso { display: none; }
+.mi-marcador:hover .mi-marcador__nucleo,
+.mi-marcador:focus-visible .mi-marcador__nucleo { stroke-width: 4; }
+.mi-marcador:focus-visible .mi-marcador__nucleo { stroke: #fff; }
+.mi-marcador--activo .mi-marcador__nucleo { fill: var(--color); }
+.mi-marcador--atenuado { opacity: 0.2 !important; }
+
+/* Tarjeta al tocar un punto */
+.mi-tarjeta {
+  position: absolute;
+  z-index: 5;
+  width: min(260px, calc(100% - 16px));
+  padding: 1rem 2.4rem 1rem 1.1rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 16px;
+  background: rgb(14 20 28 / 0.94);
+  color: var(--nieve);
+  box-shadow: 0 20px 50px -10px rgb(0 0 0 / 0.7);
+  animation: aparecer 0.35s var(--suave);
+}
+.mi-tarjeta__cerrar {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 32px; height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--texto-suave);
+  cursor: pointer;
+}
+.mi-tarjeta__cerrar:hover { background: rgb(255 255 255 / 0.08); }
+
+/* Botones: Toda la ruta · Día 1…5 · Isla entera */
+.mi-controles {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  padding: 0 0.4rem 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+}
+.mi-controles::-webkit-scrollbar { display: none; }
+.mi-boton {
+  flex: none;
+  min-height: 40px;
+  padding: 0 1rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--texto-suave);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.mi-boton:hover { border-color: var(--color, var(--glaciar)); color: var(--nieve); }
+.mi-boton[aria-pressed='true'] { background: var(--color, var(--glaciar)); border-color: transparent; color: var(--negro); }
+@media (min-width: 900px) { .mi-controles { flex-wrap: wrap; } }
+.mi-marcador__nombre {
+  display: none;
+  fill: #f4fbff;
+  font: 600 12px/1 var(--sans);
+  letter-spacing: 0.02em;
+  paint-order: stroke;
+  stroke: rgb(11 15 20 / 0.85);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.mi-marcador--con-nombre .mi-marcador__nombre { display: block; }
