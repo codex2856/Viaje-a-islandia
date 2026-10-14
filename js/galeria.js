@@ -11,10 +11,36 @@ import { escaparHTML } from './datos.js';
 
 /** HTML de una imagen optimizada (WebP + JPG de respaldo). */
 export function htmlImagen(foto, { sizes = '(min-width: 900px) 33vw, 50vw', clase = '', alt = '', carga = 'lazy' } = {}) {
-  const dims = foto.ancho && foto.alto ? ` width="${foto.ancho}" height="${foto.alto}"` : '';
-  const img = `<img src="${escaparHTML(foto.src)}" alt="${escaparHTML(alt || foto.pie)}" loading="${carga}" decoding="async"${dims} class="${clase}">`;
+  // width/height evitan saltos mientras carga. Si no sabemos el tamaño ponemos 4:3;
+  // al cargar, la foto toma su proporción real (height: auto en CSS).
+  const dims = foto.ancho && foto.alto ? ` width="${foto.ancho}" height="${foto.alto}"` : ' width="1600" height="1200"';
+  const srcset = foto.srcset ? ` srcset="${escaparHTML(foto.srcset)}" sizes="${sizes}"` : '';
+  const img = `<img src="${escaparHTML(foto.src)}"${srcset} alt="${escaparHTML(alt || foto.pie)}" loading="${carga}" decoding="async"${dims} class="${clase}">`;
   if (!foto.srcsetWebp) return img;
   return `<picture><source type="image/webp" srcset="${escaparHTML(foto.srcsetWebp)}" sizes="${sizes}">${img}</picture>`;
+}
+
+/**
+ * Pone `url` como imagen de fondo de `elemento`, pero solo si la foto existe
+ * (se precarga antes). Devuelve una promesa con true/false.
+ */
+export function ponerFondo(elemento, url) {
+  return new Promise((resolver) => {
+    if (!url || !elemento) return resolver(false);
+    const img = new Image();
+    img.onload = () => { elemento.style.backgroundImage = `url("${url}")`; resolver(true); };
+    img.onerror = () => resolver(false);
+    img.src = url;
+  });
+}
+
+/** Muestra el crédito de una foto (autor y licencia); si hay fuente, como enlace. */
+export function pintarCredito(elemento, credito, fuente) {
+  if (!elemento || !credito) return;
+  elemento.innerHTML = fuente
+    ? `<a href="${escaparHTML(fuente)}" target="_blank" rel="noopener">${escaparHTML(credito)}</a>`
+    : escaparHTML(credito);
+  elemento.hidden = false;
 }
 
 /** Mosaico de huecos decorativos cuando aún no hay fotos. */
@@ -39,6 +65,11 @@ export function pintarGaleria(contenedor, fotos, { titulo = 'Foto' } = {}) {
       ${foto.pie ? `<span class="galeria__pie">${escaparHTML(foto.pie)}</span>` : ''}
     </button>`).join('');
 
+  // Si una foto no se puede cargar (nombre mal escrito…), quitamos su hueco del mosaico
+  contenedor.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') e.target.closest('.galeria__item')?.remove();
+  }, true);
+
   contenedor.addEventListener('click', (e) => {
     const item = e.target.closest('[data-indice]');
     if (item) abrirVisor(fotos, Number(item.dataset.indice), item);
@@ -62,6 +93,7 @@ function crearVisor() {
       <figure class="visor__figura">
         <img class="visor__img" alt="">
         <figcaption class="visor__pie"></figcaption>
+        <p class="visor__credito"></p>
       </figure>
     </div>
     <p class="visor__contador" aria-live="polite"></p>
@@ -101,6 +133,10 @@ function mostrar(indice) {
   img.src = foto.src;
   img.alt = foto.pie || `Foto ${actual + 1}`;
   visor.querySelector('.visor__pie').textContent = foto.pie || '';
+  const credito = visor.querySelector('.visor__credito');
+  credito.innerHTML = foto.credito
+    ? (foto.fuente ? `<a href="${escaparHTML(foto.fuente)}" target="_blank" rel="noopener">${escaparHTML(foto.credito)}</a>` : escaparHTML(foto.credito))
+    : '';
   visor.querySelector('.visor__contador').textContent = `${actual + 1} / ${lista.length}`;
   visor.classList.toggle('visor--una', lista.length < 2);
 

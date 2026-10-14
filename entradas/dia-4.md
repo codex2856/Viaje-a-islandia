@@ -8,6 +8,11 @@ amanecer: "09:57"
 atardecer: "17:13"
 lo_mejor: "Las columnas de basalto de Reynisfjara con el mar rompiendo de lado."
 resumen: "Reynisfjara, el mirador de Dyrhólaey y paseo nocturno por Reikiavik."
+# Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
+# Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
+# (y borra portada_credito).
+portada: "commons:Reynisfjara-66-Basalt-2018-gje.jpg"
+portada_credito: "Foto: Gerd Eichmann · Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Playa de Reynisfjara"

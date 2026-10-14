@@ -8,6 +8,11 @@ amanecer: "09:58"
 atardecer: "17:09"
 lo_mejor: "Caminar detrás de Seljalandsfoss con el agua congelada colgando como cristal."
 resumen: "Seljalandsfoss, Skógafoss y un río de lava real en el show de Vík."
+# Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
+# Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
+# (y borra portada_credito).
+portada: "commons:Skogafoss winter.jpg"
+portada_credito: "Foto: The blanz · CC BY-SA 3.0 · Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Seljalandsfoss"

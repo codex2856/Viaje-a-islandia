@@ -23,7 +23,7 @@ HTML, CSS y JavaScript puro: **sin frameworks y sin paso de build**.
 ├── js/
 │   ├── datos.js        Lee JSON y Markdown (parser de front matter y Markdown hecho a mano)
 │   ├── efectos.js      Scroll, parallax, cursor, transiciones, menú inferior
-│   ├── nieve.js        Nieve en <canvas>
+│   ├── cielo.js        Aurora, estrellas y nieve en <canvas> (un solo bucle a 20 fps)
 │   ├── mapa.js         Mapas Leaflet (se cargan solo cuando van a verse)
 │   ├── galeria.js      Mosaico + visor con gestos
 │   ├── inicio.js       Lógica de index.html
@@ -116,7 +116,8 @@ Todo se hace desde el navegador del móvil en **github.com** (no hace falta orde
 | `publicado` | `true` / `false` | `false` = tarjeta "Próximamente" con escarcha |
 | `paradas` | lista | Marcadores del mapa (`nombre`, `lat`, `lng`, `confirmada`) |
 | `fotos` | lista (opcional) | Orden y pies de foto |
-| `portada` | `"foto.jpg"` (opcional) | Foto de cabecera del día |
+| `portada` | `"foto.jpg"` (opcional) | Foto de cabecera del día y fondo de su tarjeta |
+| `portada_credito` | `"Foto: …"` (opcional) | Autor/licencia (solo para fotos que no son tuyas) |
 
 Con `confirmada: false` la parada sale en el mapa con borde discontinuo y más transparente.
 
@@ -126,6 +127,31 @@ Costes (`previsto` / `real`; deja `real: null` hasta saberlo), lista de *qué ll
 enlaces útiles, textos del resumen final (`publicado: true` quita la etiqueta de borrador),
 `top_fotos` (`[{ "src": "fotos/dia-3/IMG_1.jpg", "pie": "…" }]`) y los puntos de la ruta.
 Cuidado con las comas: si el JSON tiene un error, la consola del navegador lo indica.
+
+## Fotos de ejemplo (Wikimedia Commons)
+
+Hasta que tengas tus fotos, la portada, la cabecera de cada día y el "Top de fotos"
+usan fotos con licencia libre de [Wikimedia Commons](https://commons.wikimedia.org),
+enlazadas directamente y con su crédito (autor y licencia), como piden sus licencias.
+
+En cualquier campo de foto puedes escribir `commons:Nombre del archivo.jpg` (el nombre
+que aparece en la página del archivo en Commons) y la web la carga a la medida justa.
+
+Para usar **tus** fotos:
+
+- Portada: sube `fotos/portada.jpg` (tiene prioridad sobre la de ejemplo).
+- Cada día: cambia `portada: "commons:…"` por `portada: "IMG_1234.jpg"` y borra `portada_credito`.
+- Top de fotos: en `datos-viaje.json`, cambia `top_fotos` por tus fotos.
+
+Si un nombre de Commons está mal escrito, la foto simplemente no aparece (no se rompe nada).
+
+## Rendimiento: por qué el cielo va en canvas
+
+Las animaciones CSS infinitas (aurora, estrellas, niebla…) obligan al navegador a
+redibujar la pantalla 60 veces por segundo y disparan el uso de CPU. Por eso todo el
+cielo animado se dibuja en `js/cielo.js` con un solo bucle a 20 fotogramas/s, la aurora
+en un canvas diminuto que el navegador amplía (y suaviza) gratis, y todo se pausa cuando
+no está en pantalla o la pestaña está oculta. Los pulsos del mapa se repiten 3 veces y paran.
 
 ## 4. Fotos: optimizarlas (opcional, desde un ordenador)
 

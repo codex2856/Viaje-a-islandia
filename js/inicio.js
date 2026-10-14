@@ -9,19 +9,22 @@
    ===================================================================== */
 
 import {
-  TOTAL_DIAS, cargarDatosViaje, cargarEntradas, cargarFotos, escaparHTML,
-  estadoViaje, formatearFecha,
+  TOTAL_DIAS, cargarDatosViaje, cargarEntradas, cargarFotos, construirFoto, escaparHTML,
+  estadoViaje, formatearFecha, resolverImagen,
 } from './datos.js';
 import { alCargar, iniciarEfectosComunes, observarReveal, observarParallax, pintarNavegacionDias } from './efectos.js';
-import { iniciarNieve } from './nieve.js';
+import { iniciarCielo } from './cielo.js';
 import { crearMapaRuta, crearMiniMapa, cuandoSeaVisible, COLOR_DIA } from './mapa.js';
-import { htmlImagen, htmlHuecos, pintarGaleria } from './galeria.js';
+import { htmlImagen, htmlHuecos, pintarCredito, pintarGaleria, ponerFondo } from './galeria.js';
 
 iniciarEfectosComunes();
-// La nieve arranca cuando la página ya ha cargado (no compite con el primer pintado)
-alCargar(() => iniciarNieve(document.querySelector('.hero__nieve')));
+// El cielo animado (aurora, estrellas y nieve) arranca cuando la página ya ha cargado (no compite con el primer pintado)
+alCargar(() => iniciarCielo({
+  aurora: document.querySelector('.aurora-canvas'),
+  nieve: document.querySelector('.hero__nieve'),
+  zona: document.querySelector('.hero'),
+}), 1000); // 1 s después de cargar: no compite con el primer pintado
 animarTituloLetraALetra(document.querySelector('[data-letras]'));
-detectarFotoPortada();
 
 /* ---------------------------------------------------------------------
    Título del hero: cada letra en un <span> con su propio retraso
@@ -42,17 +45,23 @@ function animarTituloLetraALetra(titulo) {
 }
 
 /* ---------------------------------------------------------------------
-   Foto de portada: si existe fotos/portada.jpg se usa como fondo
+   Foto de portada:
+   1) si existe fotos/portada.jpg (tu foto), se usa esa;
+   2) si no, la de "portada" en datos-viaje.json (foto de ejemplo);
+   3) si tampoco, se queda el cielo generado con CSS.
    --------------------------------------------------------------------- */
-function detectarFotoPortada() {
-  const ruta = 'fotos/portada.jpg';
-  const img = new Image();
-  img.onload = () => {
-    const capa = document.querySelector('.hero__foto');
-    capa.style.backgroundImage = `url("${ruta}")`;
-    document.querySelector('.hero').classList.add('hero--con-foto');
-  };
-  img.src = ruta; // si no existe, onload no se dispara y se queda el cielo generado
+async function detectarFotoPortada(sitio = {}) {
+  const capa = document.querySelector('.hero__foto');
+  const hero = document.querySelector('.hero');
+  if (await ponerFondo(capa, 'fotos/portada.jpg')) {
+    hero.classList.add('hero--con-foto');
+    return;
+  }
+  const ejemplo = sitio.portada;
+  if (ejemplo?.imagen && await ponerFondo(capa, resolverImagen(ejemplo.imagen, 'fotos', 2400))) {
+    hero.classList.add('hero--con-foto');
+    pintarCredito(document.querySelector('.hero .credito-foto'), ejemplo.credito, ejemplo.fuente);
+  }
 }
 
 /* ---------------------------------------------------------------------
@@ -197,9 +206,11 @@ function pintarEnlaces(enlaces = []) {
 function htmlTarjetaDia(e, fotos) {
   const miniaturas = fotos.slice(0, 3);
   const fecha = escaparHTML(formatearFecha(e.fecha));
+  const fondo = e.portada ? resolverImagen(e.portada, `fotos/dia-${e.numero}`, 1200) : '';
   return `
     <article class="dia-tarjeta vidrio ${e.publicado ? '' : 'dia-tarjeta--pronto'}" id="dia-${e.numero}"
              style="--color:${COLOR_DIA[e.numero]}" data-reveal>
+      ${fondo ? `<div class="dia-tarjeta__foto" aria-hidden="true"><span data-parallax="-0.08" style="background-image:url('${escaparHTML(fondo)}')"></span></div>` : ''}
       <span class="dia-tarjeta__numero" data-parallax="0.12" aria-hidden="true"
             style="view-transition-name: numero-dia-${e.numero}">${e.numero}</span>
       <div class="dia-tarjeta__cuerpo">
@@ -294,7 +305,8 @@ function pintarResumen(resumen = {}) {
   document.getElementById('consejos').innerHTML = (resumen.consejos || [])
     .map((c) => `<li data-reveal>${escaparHTML(c)}</li>`).join('');
 
-  const top = (resumen.top_fotos || []).map((f) => ({ src: f.src, pie: f.pie || '', srcsetWebp: '' }));
+  const top = (resumen.top_fotos || []).filter((f) => f.src)
+    .map((f) => construirFoto('fotos', String(f.src), f.pie, null, f.credito));
   const galeria = document.getElementById('top-fotos');
   if (top.length) pintarGaleria(galeria, top, { titulo: 'Top' });
   else galeria.innerHTML = htmlHuecos(6, 'Pronto');
@@ -308,6 +320,7 @@ function pintarResumen(resumen = {}) {
 async function iniciar() {
   const [datos, entradas] = await Promise.all([cargarDatosViaje(), cargarEntradas()]);
 
+  detectarFotoPortada(datos.sitio);
   iniciarCuentaAtras(datos.sitio);
   pintarNavegacionDias(entradas);
   pintarLineaTiempo(entradas);
