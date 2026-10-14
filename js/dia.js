@@ -11,10 +11,10 @@ import {
   TOTAL_DIAS, cargarDatosViaje, cargarEntradas, cargarFotos, escaparHTML,
   formatearFecha, markdownAHTML, resolverImagen,
 } from './datos.js';
-import { alCargar, iniciarEfectosComunes, observarReveal, observarParallax, pintarNavegacionDias } from './efectos.js';
+import { alCargar, iniciarEfectosComunes, observarReveal, observarParallax } from './efectos.js';
 import { iniciarCielo } from './cielo.js';
 import { crearMapaDia, cuandoSeaVisible, COLOR_DIA } from './mapa.js';
-import { pintarCredito, pintarGaleria, ponerFondo } from './galeria.js';
+import { activarFotosDelTexto, pintarCredito, pintarGaleria, ponerFondo } from './galeria.js';
 
 iniciarEfectosComunes();
 alCargar(() => iniciarCielo({
@@ -56,7 +56,7 @@ function pintarTexto(e) {
   if (e.publicado || verBorrador) {
     articulo.innerHTML =
       (!e.publicado ? '<div class="etiqueta-borrador">Vista previa · este día aún no está publicado</div>' : '') +
-      markdownAHTML(e.cuerpo);
+      markdownAHTML(e.cuerpo, { carpeta: `fotos/dia-${e.numero}` });
   } else {
     // Día sin escribir: tarjeta con escarcha y el plan previsto
     articulo.innerHTML = `
@@ -71,6 +71,7 @@ function pintarTexto(e) {
   // Cada bloque del texto aparece suavemente al hacer scroll
   articulo.querySelectorAll(':scope > *').forEach((el) => el.setAttribute('data-reveal', ''));
   observarReveal(articulo);
+  activarFotosDelTexto(articulo);
 }
 
 function pintarLateral(e) {
@@ -104,7 +105,6 @@ async function iniciar() {
   pintarTexto(entrada);
   pintarLateral(entrada);
   pintarAnteriorSiguiente(entradas);
-  pintarNavegacionDias(entradas, numero);
 
   const mapa = document.getElementById('mapa-dia');
   cuandoSeaVisible(mapa, () => crearMapaDia(mapa, entrada, datos).catch((err) => {
@@ -119,7 +119,10 @@ async function iniciar() {
   const seccionGaleria = $('seccion-galeria');
   if (!entrada.publicado && !verBorrador) { seccionGaleria.hidden = true; return; }
 
-  const fotos = await cargarFotos({ ...entrada, publicado: true }, datos);
+  const todas = await cargarFotos({ ...entrada, publicado: true }, datos);
+  // La galería muestra las fotos que NO has puesto ya dentro del texto
+  const enTexto = new Set([...document.querySelectorAll('.articulo .figura-texto img')].map((img) => img.getAttribute('src')));
+  const fotos = todas.filter((f) => !enTexto.has(f.src));
   if (fotos.length) {
     pintarGaleria(document.getElementById('galeria'), fotos, { titulo: `Día ${numero}` });
     observarReveal(seccionGaleria);
@@ -127,8 +130,8 @@ async function iniciar() {
     seccionGaleria.hidden = true;
   }
 
-  // Sin "portada:", la cabecera usa la primera foto de la galería
-  if (!entrada.portada && fotos[0]) ponerFotoCabecera(fotos[0].src, fotos[0].credito, '');
+  // Sin "portada:", la cabecera usa la primera foto del día
+  if (!entrada.portada && todas[0]) ponerFotoCabecera(todas[0].src, todas[0].credito, '');
 }
 
 async function ponerFotoCabecera(url, credito, original) {

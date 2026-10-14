@@ -161,11 +161,11 @@ export function separarFrontMatter(texto) {
    El HTML que escribas se muestra como texto (por seguridad).
    --------------------------------------------------------------------- */
 
-function enLinea(texto) {
+function enLinea(texto, carpeta = '') {
   let t = escaparHTML(texto);
   t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
-  t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g,
-    '<img src="$2" alt="$1" loading="lazy" decoding="async">');
+  t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
+    `<img src="${resolverImagen(src.replace(/&amp;/g, '&'), carpeta)}" alt="${alt}" loading="lazy" decoding="async">`);
   t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, txt, url) => {
     const externo = /^https?:\/\//.test(url);
     return `<a href="${url}"${externo ? ' target="_blank" rel="noopener"' : ''}>${txt}</a>`;
@@ -176,13 +176,19 @@ function enLinea(texto) {
   return t;
 }
 
-export function markdownAHTML(md = '') {
+/**
+ * @param {string} md       Texto en Markdown
+ * @param {object} opciones { carpeta: 'fotos/dia-1' } → las fotos escritas solo con
+ *                          su nombre (![pie](IMG_1.jpg)) se buscan en esa carpeta
+ */
+export function markdownAHTML(md = '', opciones = {}) {
+  const carpeta = opciones.carpeta || '';
   const lineas = md.replace(/\r\n/g, '\n').split('\n');
   const html = [];
   let parrafo = [];
 
   const cerrarParrafo = () => {
-    if (parrafo.length) html.push(`<p>${enLinea(parrafo.join(' '))}</p>`);
+    if (parrafo.length) html.push(`<p>${enLinea(parrafo.join(' '), carpeta)}</p>`);
     parrafo = [];
   };
 
@@ -206,7 +212,7 @@ export function markdownAHTML(md = '') {
     if (titulo) {
       cerrarParrafo();
       const nivel = Math.min(6, Math.max(2, titulo[1].length));
-      html.push(`<h${nivel}>${enLinea(titulo[2])}</h${nivel}>`);
+      html.push(`<h${nivel}>${enLinea(titulo[2], carpeta)}</h${nivel}>`);
       continue;
     }
 
@@ -222,7 +228,7 @@ export function markdownAHTML(md = '') {
         i++;
       }
       i--;
-      html.push(`<blockquote>${markdownAHTML(cita.join('\n'))}</blockquote>`);
+      html.push(`<blockquote>${markdownAHTML(cita.join('\n'), opciones)}</blockquote>`);
       continue;
     }
 
@@ -233,7 +239,7 @@ export function markdownAHTML(md = '') {
       const ordenada = /^\d+\./.test(limpia);
       const items = [];
       while (i < lineas.length && esItem(lineas[i])) {
-        items.push(`<li>${enLinea(lineas[i].trim().replace(/^([-*+]|\d+\.)\s+/, ''))}</li>`);
+        items.push(`<li>${enLinea(lineas[i].trim().replace(/^([-*+]|\d+\.)\s+/, ''), carpeta)}</li>`);
         i++;
       }
       i--;
@@ -242,10 +248,11 @@ export function markdownAHTML(md = '') {
     }
 
     // Imagen sola en su línea → figura con pie de foto
-    const imagen = limpia.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
+    const imagen = limpia.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imagen) {
       cerrarParrafo();
-      html.push(`<figure class="figura-texto" data-reveal><img src="${escaparHTML(imagen[2])}" alt="${escaparHTML(imagen[1])}" loading="lazy" decoding="async">${imagen[1] ? `<figcaption>${enLinea(imagen[1])}</figcaption>` : ''}</figure>`);
+      const src = resolverImagen(imagen[2].trim(), carpeta);
+      html.push(`<figure class="figura-texto" data-reveal><img src="${escaparHTML(src)}" alt="${escaparHTML(imagen[1])}" loading="lazy" decoding="async">${imagen[1] ? `<figcaption>${enLinea(imagen[1], carpeta)}</figcaption>` : ''}</figure>`);
       continue;
     }
 

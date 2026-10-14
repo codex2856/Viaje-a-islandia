@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Resumen · Islandia · 5 días de hielo y fuego</title>
+  <meta name="description" content="Resumen del viaje a Islandia: lo mejor, lo que costó y consejos.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Islandia · 5 días de hielo y fuego">
+  <meta property="og:title" content="Resumen · Islandia · 5 días de hielo y fuego">
+  <meta property="og:description" content="Resumen del viaje a Islandia: lo mejor, lo que costó y consejos.">
+  <meta property="og:url" content="https://codex2856.github.io/Viaje-a-islandia/resumen.html">
+  <meta property="og:image" content="https://codex2856.github.io/Viaje-a-islandia/fotos/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="canonical" href="https://codex2856.github.io/Viaje-a-islandia/resumen.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap"></noscript>
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <script type="module" src="js/resumen.js"></script>
+</head>
+<body class="pagina-resumen">
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <div class="progreso-lectura" aria-hidden="true"></div>
+
+  <header class="cabecera">
+    <a class="cabecera__marca" href="./" title="Volver al inicio">
+      <svg class="cabecera__logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 24 12 9l5 8 3-4 9 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      Ísland <span class="cabecera__anio">’27</span>
+    </a>
+    <button class="cabecera__menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+      <span class="visualmente-oculto">Abrir menú</span><span class="hamburguesa" aria-hidden="true"></span>
+    </button>
+    <nav id="menu-principal" class="cabecera__menu" aria-label="Menú principal">
+      <a href="./">El viaje</a>
+      <a href="diario.html">Diario</a>
+      <a href="resumen.html" aria-current="page">Resumen</a>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="cabecera-pagina">
+      <div class="hero__cielo" aria-hidden="true">
+        <div class="estrellas estrellas--1"></div>
+        <div class="estrellas estrellas--2"></div>
+        <canvas class="aurora-canvas aurora-canvas--suave"></canvas>
+      </div>
+      <canvas class="hero__nieve" aria-hidden="true"></canvas>
+      <div class="contenedor cabecera-pagina__contenido">
+        <p class="antetitulo"><span>Resumen</span> Islandia 2027</p>
+        <h1 class="cabecera-pagina__titulo">Lo que me <em>llevo</em></h1>
+      </div>
+    </section>
+
+    <div class="tema-claro zona-clara amanecer anochecer">
+      <!-- js/resumen.js pinta aquí el resumen (o el aviso de que llegará a la vuelta) -->
+      <div class="contenedor resumen" data-resumen></div>
+    </div>
+  </main>
+
+  <footer class="pie pie--simple">
+    <div class="contenedor pie__fila">
+      <a class="pie__github" href="https://github.com/codex2856" rel="me noopener" target="_blank">github.com/codex2856</a>
+      <p class="pie__copy">© <span data-anio>2027</span> · Ísland</p>
+    </div>
+  </footer>
+
+  <!-- Pestañas: barra inferior en el móvil (en escritorio están en la cabecera) -->
+  <nav class="pestanas" aria-label="Secciones">
+    <a class="pestanas__enlace" href="./"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 19 9.5 8l4 6.5 2.5-3.5L21 19Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>El viaje</span></a>
+    <a class="pestanas__enlace" href="diario.html"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Zm0 13a3 3 0 0 1 3-3h11M9 8h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Diario</span></a>
+    <a class="pestanas__enlace" href="resumen.html" aria-current="page"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Resumen</span></a>
+  </nav>
+</body>
+</html>

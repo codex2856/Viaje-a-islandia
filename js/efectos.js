@@ -7,10 +7,9 @@
    - Parallax                                       [data-parallax="0.2"]
    - Brillo que sigue al cursor en tarjetas         .vidrio
    - Transiciones entre páginas (View Transitions + alternativa)
-   - Menú inferior del móvil con los 5 días
+   - Pestañas (abajo en el móvil) que cambian de color según el fondo
    ===================================================================== */
 
-import { TOTAL_DIAS, escaparHTML } from './datos.js';
 
 const movimientoReducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const esEscritorio = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -41,11 +40,11 @@ function iniciarScroll() {
       // ¿Qué hay justo debajo de la cabecera? Si es una zona clara, texto oscuro
       const debajo = document.elementFromPoint(innerWidth / 2, cabecera.offsetHeight + 4);
       cabecera.classList.toggle('cabecera--clara', Boolean(debajo?.closest('.tema-claro')));
-      // Lo mismo para el menú inferior del móvil: miramos justo encima de él
-      const nav = document.querySelector('.nav-dias');
-      if (nav?.offsetHeight) {
-        const encima = document.elementFromPoint(innerWidth / 2, innerHeight - nav.offsetHeight - 4);
-        nav.classList.toggle('nav-dias--clara', Boolean(encima?.closest('.tema-claro')));
+      // Lo mismo para las pestañas de abajo (móvil): miramos justo encima de ellas
+      const pestanas = document.querySelector('.pestanas');
+      if (pestanas?.offsetHeight) {
+        const encima = document.elementFromPoint(innerWidth / 2, innerHeight - pestanas.offsetHeight - 4);
+        pestanas.classList.toggle('pestanas--clara', Boolean(encima?.closest('.tema-claro')));
       }
       // Solo escondemos si bajamos más de 8px (evita parpadeos) y no estamos arriba
       if (y > ultimoY + 8 && y > 160) cabecera.classList.add('cabecera--oculta');
@@ -151,34 +150,6 @@ function iniciarTransiciones() {
   });
   // Si el usuario vuelve atrás, la página puede venir de caché con la clase puesta
   addEventListener('pageshow', () => document.body.classList.remove('pagina-saliendo'));
-}
-
-/* ---------- Menú inferior (móvil): 5 puntos, uno por día ---------- */
-export function pintarNavegacionDias(entradas, diaActivo = 0) {
-  const nav = document.querySelector('.nav-dias');
-  if (!nav) return;
-  const publicados = entradas.filter((e) => e.publicado).length;
-  // La línea se rellena hasta el último día publicado
-  const ultimo = Math.max(0, ...entradas.filter((e) => e.publicado).map((e) => e.numero));
-  const porcentaje = ultimo ? ((ultimo - 1) / (TOTAL_DIAS - 1)) * 100 : 0;
-
-  nav.innerHTML = `
-    <div class="nav-dias__pista" aria-hidden="true">
-      <span class="nav-dias__relleno" style="width:${porcentaje}%"></span>
-    </div>
-    <ol class="nav-dias__lista">
-      ${entradas.map((e) => `
-        <li>
-          <a href="dia.html?n=${e.numero}"
-             class="nav-dias__punto ${e.publicado ? 'es-publicado' : ''} ${e.numero === diaActivo ? 'es-activo' : ''}"
-             ${e.numero === diaActivo ? 'aria-current="page"' : ''}
-             aria-label="Día ${e.numero}: ${escaparHTML(e.titulo)}${e.publicado ? '' : ' (próximamente)'}">
-            <span class="nav-dias__circulo"></span>
-            <span class="nav-dias__num">${e.numero}</span>
-          </a>
-        </li>`).join('')}
-    </ol>
-    <p class="nav-dias__texto">${publicados} de ${TOTAL_DIAS} días escritos</p>`;
 }
 
 /* ---------- Menú hamburguesa (para pantallas medianas) ---------- */

@@ -50,66 +50,14 @@
     { "nombre": "safetravel.is", "descripcion": "Alertas de seguridad para viajeros", "url": "https://safetravel.is" }
   ],
 
-  "que_llevar": [
-    {
-      "categoria": "Ropa",
-      "items": [
-        "Capa base térmica (merino)",
-        "Forro polar o plumón ligero",
-        "Chaqueta y pantalón impermeables",
-        "Botas de montaña impermeables",
-        "Gorro, guantes y braga de cuello",
-        "Calcetines de lana (3 pares)",
-        "Bañador para las lagunas"
-      ]
-    },
-    {
-      "categoria": "Documentos",
-      "items": [
-        "DNI o pasaporte",
-        "Carnet de conducir",
-        "Reserva del coche de alquiler",
-        "Reservas de hoteles y Lava Show"
-      ]
-    }
-  ],
-
   "resumen": {
-    "_nota": "Rellena esto al volver. publicado: false muestra el resumen como borrador.",
+    "_nota": "Se rellena al volver del viaje. Mientras publicado sea false, la pestaña Resumen solo dice que se escribirá a la vuelta.",
     "publicado": false,
-    "intro": "Cinco días, unos 700 kilómetros y dos elementos que no se llevan nada bien: el hielo y el fuego. Esto es lo que me llevo.",
-    "lo_mejor": [
-      { "titulo": "Strokkur al mediodía", "texto": "El géiser estallando contra un cielo rosa que nunca termina de ser de día." },
-      { "titulo": "Seljalandsfoss congelada", "texto": "Estalactitas de hielo del tamaño de una persona colgando junto a la cascada." },
-      { "titulo": "Lava a 1100 °C", "texto": "El Lava Show de Vík: el calor en la cara mientras fuera nieva." }
-    ],
+    "intro": "",
+    "lo_mejor": [],
     "moneda": "€",
-    "costes": [
-      { "concepto": "Vuelos ida y vuelta", "previsto": 160, "real": null },
-      { "concepto": "Hospedaje y coche de alquiler", "previsto": 330, "real": null },
-      { "concepto": "Lava Show en Vík", "previsto": 49, "real": null },
-      { "concepto": "Secret Lagoon", "previsto": 35, "real": null },
-      { "concepto": "Gasolina", "previsto": null, "real": null },
-      { "concepto": "Supermercado y comidas", "previsto": null, "real": null },
-      { "concepto": "Aparcamientos", "previsto": null, "real": null },
-      { "concepto": "Seguro de viaje", "previsto": null, "real": null },
-      { "concepto": "Recuerdos y caprichos", "previsto": null, "real": null }
-    ],
-    "consejos": [
-      "Revisa road.is cada mañana antes de salir: en invierno cierran tramos sin aviso.",
-      "Hay apenas 7 horas de luz: sal de noche y llega a cada parada con el sol bajo.",
-      "Llena el depósito cuando veas una gasolinera, aunque te quede medio.",
-      "Compra en Bónus o Krónan: comer fuera cuesta el triple.",
-      "Nunca le des la espalda al mar en Reynisfjara."
-    ],
-    "_nota_top_fotos": "Fotos de ejemplo de Wikimedia Commons hasta que tengas las tuyas. Cámbialas por { \"src\": \"fotos/dia-3/IMG_1234.jpg\", \"pie\": \"…\" }.",
-    "top_fotos": [
-      { "src": "commons:Iceland Aurora 1.jpg", "pie": "Aurora sobre Þingvellir", "credito": "Foto: Carl Young · CC BY-SA 4.0 · Wikimedia Commons" },
-      { "src": "commons:Seljalandsfoss (16467797491).jpg", "pie": "Seljalandsfoss en enero", "credito": "Foto: sergejf · CC BY-SA 2.0 · Wikimedia Commons" },
-      { "src": "commons:Skogafoss in winter.jpg", "pie": "Skógafoss en invierno", "credito": "Foto: Martyn Smith · CC BY 2.0 · Wikimedia Commons" },
-      { "src": "commons:Aurora-Igloo-Hella-Iceland.jpg", "pie": "Aurora en Hella", "credito": "Foto: Wikimedia Commons" },
-      { "src": "commons:Fountain geyser Strokkur, Haukadalur, Iceland.JPG", "pie": "Strokkur en plena erupción", "credito": "Foto: Wikimedia Commons" },
-      { "src": "commons:Gullfoss waterfalls.jpg", "pie": "Gullfoss en invierno", "credito": "Foto: Wikimedia Commons" }
-    ]
+    "costes": [],
+    "consejos": [],
+    "top_fotos": []
   }
 }

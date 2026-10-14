@@ -48,11 +48,10 @@
     <button class="cabecera__menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
       <span class="visualmente-oculto">Abrir menú</span><span class="hamburguesa" aria-hidden="true"></span>
     </button>
-    <nav id="menu-principal" class="cabecera__menu" aria-label="Secciones">
-      <a href="#ruta">La ruta</a>
-      <a href="#antes">Antes del viaje</a>
-      <a href="#dias">Los 5 días</a>
-      <a href="#resumen">Resumen</a>
+    <nav id="menu-principal" class="cabecera__menu" aria-label="Menú principal">
+      <a href="./" aria-current="page">El viaje</a>
+      <a href="diario.html">Diario</a>
+      <a href="resumen.html">Resumen</a>
     </nav>
   </header>
 
@@ -156,12 +155,13 @@
       </div>
     </section>
 
-    <!-- ===================== ANTES DEL VIAJE ===================== -->
+    <!-- ===================== CÓMO VA A SER EL VIAJE ===================== -->
     <section id="antes" class="seccion seccion--antes tema-claro amanecer" aria-labelledby="titulo-antes">
       <div class="contenedor">
         <header class="seccion__cabecera" data-reveal>
-          <p class="antetitulo"><span>02</span> Antes del viaje</p>
-          <h2 id="titulo-antes" class="seccion__titulo">Preparar el <em>invierno</em></h2>
+          <p class="antetitulo"><span>02</span> El plan</p>
+          <h2 id="titulo-antes" class="seccion__titulo">Cómo va a ser el <em>viaje</em></h2>
+          <p class="seccion__intro">Cinco días por el sur de Islandia en pleno invierno: el Círculo Dorado, las cascadas de la costa sur, la arena negra de Vík y Reikiavik.</p>
         </header>
 
         <div class="antes-rejilla">
@@ -178,14 +178,6 @@
             </article>
 
             <article class="panel vidrio" data-reveal>
-              <div class="panel__fila">
-                <h3 class="subtitulo">Qué llevar</h3>
-                <p class="contador-maleta" id="contador-maleta" aria-live="polite"></p>
-              </div>
-              <div class="maleta" id="maleta"></div>
-            </article>
-
-            <article class="panel vidrio" data-reveal>
               <h3 class="subtitulo">Enlaces útiles</h3>
               <ul class="enlaces" id="enlaces"></ul>
             </article>
@@ -194,42 +186,16 @@
       </div>
     </section>
 
-    <!-- ===================== LOS 5 DÍAS ===================== -->
-    <section id="dias" class="seccion seccion--dias tema-claro" aria-labelledby="titulo-dias">
-      <div class="contenedor">
-        <header class="seccion__cabecera" data-reveal>
-          <p class="antetitulo"><span>03</span> El diario</p>
-          <h2 id="titulo-dias" class="seccion__titulo">Los <em>5 días</em></h2>
-          <p class="seccion__intro">Una entrada por noche, escrita desde el móvil con los dedos todavía fríos.</p>
-        </header>
-        <div class="dias" id="lista-dias"></div>
-      </div>
-    </section>
-
-    <!-- ===================== RESUMEN FINAL ===================== -->
-    <section id="resumen" class="seccion seccion--resumen tema-claro anochecer" aria-labelledby="titulo-resumen">
-      <div class="contenedor">
-        <header class="seccion__cabecera" data-reveal>
-          <p class="antetitulo"><span>04</span> Resumen final</p>
-          <h2 id="titulo-resumen" class="seccion__titulo">Lo que me <em>llevo</em></h2>
-          <p class="seccion__intro" id="resumen-intro"></p>
-        </header>
-
-        <div class="lo-mejor" id="resumen-lo-mejor"></div>
-
-        <div class="resumen-rejilla">
-          <article class="panel vidrio" data-reveal>
-            <h3 class="subtitulo">Costes reales</h3>
-            <div class="tabla-envoltorio" id="tabla-costes"></div>
-          </article>
-          <article class="panel vidrio" data-reveal>
-            <h3 class="subtitulo">Consejos</h3>
-            <ol class="consejos" id="consejos"></ol>
-          </article>
-        </div>
-
-        <h3 class="subtitulo subtitulo--centro" data-reveal>Top de fotos</h3>
-        <div class="galeria galeria--top" id="top-fotos"></div>
+    <!-- ===================== INVITACIÓN AL DIARIO ===================== -->
+    <section class="seccion seccion--al-diario tema-claro anochecer" aria-labelledby="titulo-al-diario">
+      <div class="contenedor al-diario" data-reveal>
+        <p class="antetitulo"><span>03</span> El diario</p>
+        <h2 id="titulo-al-diario" class="seccion__titulo">Cada noche, <em>un día</em></h2>
+        <p class="seccion__intro">Lo que pase cada día lo iré contando aquí, con fotos, desde el móvil. La primera entrada, la noche del 30 de enero.</p>
+        <a class="boton boton--claro" href="diario.html">
+          <span>Abrir el diario</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </section>
   </main>
@@ -253,7 +219,11 @@
     </div>
   </footer>
 
-  <!-- Menú inferior en móvil: 5 puntos, uno por día -->
-  <nav class="nav-dias" aria-label="Días del viaje"></nav>
+  <!-- Pestañas: barra inferior en el móvil (en escritorio están en la cabecera) -->
+  <nav class="pestanas" aria-label="Secciones">
+    <a class="pestanas__enlace" href="./" aria-current="page"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 19 9.5 8l4 6.5 2.5-3.5L21 19Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>El viaje</span></a>
+    <a class="pestanas__enlace" href="diario.html"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Zm0 13a3 3 0 0 1 3-3h11M9 8h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Diario</span></a>
+    <a class="pestanas__enlace" href="resumen.html"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Resumen</span></a>
+  </nav>
 </body>
 </html>

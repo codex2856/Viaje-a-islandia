@@ -13,7 +13,7 @@
     9. Resumen final
    10. Galería y visor
    11. Página de un día
-   12. Pie de página y menú inferior móvil
+   12. Pie de página y pestañas
    13. Leaflet (marcadores, ventanas)
    14. Animaciones, transiciones de página y movimiento reducido
    15. Tema claro (diseño mixto noche → día → noche)
@@ -1761,7 +1761,7 @@ html.visor-abierto { overflow: hidden; }
 .anterior-siguiente__enlace--siguiente .anterior-siguiente__num { left: 0.1em; }
 
 /* =====================================================================
-   12. PIE DE PÁGINA Y MENÚ INFERIOR MÓVIL
+   12. PIE DE PÁGINA Y PESTAÑAS
    ===================================================================== */
 .pie {
   position: relative;
@@ -1791,65 +1791,53 @@ html.visor-abierto { overflow: hidden; }
 .pie__fila { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
 .pie__fila .pie__copy { margin: 0; }
 
-/* --- Menú inferior con los 5 días (solo móvil) --- */
-.nav-dias {
+/* --- Pestañas: barra inferior en el móvil (El viaje · Diario · Resumen) --- */
+.pestanas {
   position: fixed;
   inset: auto 0 0;
   z-index: 900;
-  padding: 0.35rem var(--margen) calc(0.35rem + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0.3rem var(--margen) calc(0.3rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--borde);
   background: rgb(11 15 20 / 0.94);
+  transition: background-color 0.4s, border-color 0.4s;
 }
-.nav-dias:empty { display: none; }
-.nav-dias__pista {
-  position: absolute;
-  top: calc(0.35rem + 21px);
-  left: calc(var(--margen) + (100% - 2 * var(--margen)) * 0.1);
-  right: calc(var(--margen) + (100% - 2 * var(--margen)) * 0.1);
-  height: 2px;
-  border-radius: 2px;
-  background: rgb(255 255 255 / 0.1);
-}
-.nav-dias__relleno {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--degradado-aurora);
-  box-shadow: 0 0 10px rgb(92 255 177 / 0.6);
-  transition: width 1s var(--suave);
-}
-.nav-dias__lista { position: relative; display: flex; margin: 0; padding: 0; list-style: none; }
-.nav-dias__lista li { flex: 1; }
-.nav-dias__punto {
+.pestanas__enlace {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.15rem;
-  min-height: 48px;
-  padding-top: 14px;
+  gap: 0.2rem;
+  min-height: 52px;
+  padding-top: 0.45rem;
+  color: var(--texto-tenue);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  transition: color 0.3s;
 }
-.nav-dias__circulo {
-  width: 14px; height: 14px;
-  border: 1.5px solid var(--borde-fuerte);
-  border-radius: 50%;
-  background: var(--negro);
-  transition: transform 0.4s var(--elastica), background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
-}
-.nav-dias__num { color: var(--texto-tenue); font-size: 0.68rem; font-weight: 500; }
-.nav-dias__punto.es-publicado .nav-dias__circulo { border-color: transparent; background: var(--verde); box-shadow: 0 0 10px rgb(92 255 177 / 0.7); }
-.nav-dias__punto.es-activo .nav-dias__circulo { transform: scale(1.35); border-color: var(--nieve); box-shadow: 0 0 0 4px rgb(127 209 232 / 0.25); }
-.nav-dias__punto.es-activo .nav-dias__num { color: var(--nieve); }
-.nav-dias__punto:active .nav-dias__circulo { transform: scale(0.85); }
-.nav-dias__texto { margin-top: -0.1rem; color: var(--texto-tenue); font-size: 0.64rem; letter-spacing: 0.14em; text-align: center; text-transform: uppercase; }
+.pestanas__enlace svg { transition: transform 0.4s var(--elastica); }
+.pestanas__enlace[aria-current='page'] { color: var(--nieve); }
+.pestanas__enlace[aria-current='page'] svg { color: var(--verde); transform: translateY(-1px); }
+.pestanas__enlace:active svg { transform: scale(0.88); }
+/* Sobre zonas claras (la clase la pone efectos.js) */
+.pestanas--clara { background: rgb(244 251 255 / 0.96); border-top-color: rgb(11 15 20 / 0.08); }
+.pestanas--clara .pestanas__enlace { color: rgb(22 32 42 / 0.66); }
+.pestanas--clara .pestanas__enlace[aria-current='page'] { color: #0b0f14; }
+.pestanas--clara .pestanas__enlace[aria-current='page'] svg { color: #0f9e67; }
 
 @media (max-width: 899px) {
-  body { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+  /* En el móvil las pestañas de abajo sustituyen al menú de la cabecera */
+  .cabecera__menu-boton, .cabecera__menu { display: none !important; }
 }
 @media (min-width: 900px) {
-  .nav-dias { display: none; }
+  .pestanas { display: none; }
+  .cabecera__menu a[aria-current='page'] { color: var(--nieve); }
+  .cabecera__menu a[aria-current='page']::after { transform: scaleX(1); }
+  .cabecera--clara .cabecera__menu a[aria-current='page'] { color: #0b0f14; }
 }
 
 /* =====================================================================
@@ -1980,7 +1968,7 @@ body.pagina-saliendo { opacity: 0; filter: blur(4px); }
 
 /* En móvil el crédito de la portada sube para no quedar tapado por el menú inferior */
 @media (max-width: 899px) {
-  .hero .credito-foto { bottom: calc(94px + env(safe-area-inset-bottom)); }
+  .hero .credito-foto { bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
 
 /* Las animaciones infinitas se pausan cuando su zona sale de la pantalla
@@ -2135,11 +2123,176 @@ body.pagina-saliendo { opacity: 0; filter: blur(4px); }
   background-size: 100% 280px, 100% 260px;
   background-position: top, bottom;
 }
-/* Menú inferior sobre zonas claras */
-.nav-dias { transition: background-color 0.4s, border-color 0.4s; }
-.nav-dias--clara { background: rgb(244 251 255 / 0.96); border-top-color: rgb(11 15 20 / 0.08); }
-.nav-dias--clara .nav-dias__pista { background: rgb(11 15 20 / 0.1); }
-.nav-dias--clara .nav-dias__circulo { background: #f4fbff; border-color: rgb(11 15 20 / 0.25); }
-.nav-dias--clara .nav-dias__num, .nav-dias--clara .nav-dias__texto { color: rgb(22 32 42 / 0.66); }
-.nav-dias--clara .nav-dias__punto.es-activo .nav-dias__circulo { border-color: #0b0f14; box-shadow: 0 0 0 4px rgb(23 112 138 / 0.2); }
-.nav-dias--clara .nav-dias__punto.es-activo .nav-dias__num { color: #0b0f14; }
+
+
+/* =====================================================================
+   16. PÁGINAS "DIARIO" Y "RESUMEN"
+   ===================================================================== */
+/* Cabecera de página, de noche (más baja que la portada) */
+.cabecera-pagina {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 62vh;
+  min-height: 62svh;
+  padding: calc(var(--alto-cabecera) + 2rem) 0 clamp(2.5rem, 7vw, 4.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #05070b 0%, #0b1826 65%, var(--negro) 100%);
+}
+.cabecera-pagina .hero__cielo { z-index: 1; }
+.cabecera-pagina .hero__nieve { z-index: 2; }
+.cabecera-pagina__contenido { position: relative; z-index: 3; animation: aparecer 1.2s var(--suave) both; }
+.cabecera-pagina__titulo {
+  max-width: 14ch;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 9vw, 6rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variation-settings: 'opsz' 144;
+}
+.cabecera-pagina__titulo em {
+  font-style: italic;
+  background: var(--degradado-aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+.cabecera-pagina__intro { margin-top: 1.2rem; max-width: 46ch; color: var(--texto-suave); font-size: clamp(1rem, 2.4vw, 1.15rem); }
+
+/* Índice de etapas */
+.etapas { padding-bottom: clamp(2rem, 5vw, 3rem); }
+.etapas__lista {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0 0 0.4rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.etapas__lista::-webkit-scrollbar { display: none; }
+.etapas__lista li { flex: 1 0 auto; scroll-snap-align: start; }
+.etapa {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 56px;
+  padding: 0.6rem 1rem 0.6rem 0.6rem;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.75);
+  text-decoration: none;
+  transition: border-color 0.3s, transform 0.4s var(--suave), box-shadow 0.4s;
+}
+.etapa:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color) 60%, transparent); box-shadow: 0 12px 30px -18px rgb(16 42 62 / 0.4); }
+.etapa__num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px; height: 38px;
+  border: 1.5px dashed color-mix(in srgb, var(--color) 70%, #06121c);
+  border-radius: 50%;
+  color: var(--color-texto);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+}
+.etapa--escrita .etapa__num { border-style: solid; background: color-mix(in srgb, var(--color) 25%, #fff); }
+.etapa__texto { display: flex; flex-direction: column; line-height: 1.25; }
+.etapa__fecha { color: var(--color-texto); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.etapa__lugar { color: var(--texto-fuerte); font-size: 0.88rem; white-space: nowrap; }
+.etapas__progreso { margin-top: 0.8rem; color: var(--texto-tenue); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* Cada día del diario */
+.cronicas { display: grid; gap: clamp(4rem, 10vw, 7rem); padding-bottom: clamp(2rem, 6vw, 4rem); }
+.cronica { max-width: 760px; margin-inline: auto; width: 100%; scroll-margin-top: calc(var(--alto-cabecera) + 1rem); }
+.cronica__foto {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1.6rem;
+  border-radius: var(--radio);
+  overflow: hidden;
+  background:
+    radial-gradient(60% 80% at 30% 20%, color-mix(in srgb, var(--color) 35%, transparent), transparent 70%),
+    linear-gradient(160deg, #0f2233, #0b0f14);
+}
+.cronica__foto span[data-parallax] {
+  position: absolute;
+  inset: -12% 0;
+  background-size: cover;
+  background-position: center;
+}
+.cronica__foto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(200deg, transparent 40%, rgb(11 15 20 / 0.55));
+}
+.cronica__numero {
+  position: absolute;
+  left: 0.15em;
+  bottom: -0.12em;
+  z-index: 1;
+  font-family: var(--serif);
+  font-size: clamp(6rem, 22vw, 10rem);
+  font-weight: 300;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 6px 30px rgb(0 0 0 / 0.35);
+}
+.cronica__fecha { color: var(--color-texto); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+.cronica__titulo {
+  margin: 0.5rem 0 0.4rem;
+  color: var(--texto-fuerte);
+  font-family: var(--serif);
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.cronica__lugar { color: var(--texto-suave); }
+.cronica__texto { margin-top: 2rem; max-width: none; }
+.cronica .pronto { margin-top: 1.6rem; }
+.cronica__mas {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  color: var(--glaciar-oscuro);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.cronica__mas span { transition: transform 0.4s var(--suave); }
+.cronica__mas:hover span { transform: translateX(5px); }
+
+/* Fotos dentro del texto: se amplían al tocarlas */
+.figura-texto img { cursor: zoom-in; transition: transform 0.6s var(--suave), box-shadow 0.6s; }
+@media (hover: hover) {
+  .figura-texto img:hover { transform: scale(1.01); box-shadow: 0 30px 60px -30px rgb(16 42 62 / 0.45); }
+}
+
+/* Resumen todavía sin escribir */
+.resumen { max-width: 980px; padding-bottom: clamp(2rem, 6vw, 4rem); }
+.resumen-pendiente { max-width: 640px; margin-inline: auto; padding: clamp(2rem, 6vw, 3.4rem); text-align: center; }
+.resumen-pendiente > * { position: relative; z-index: 1; }
+.resumen-pendiente__titulo { margin: 1rem 0 0.8rem; color: var(--texto-fuerte); font-family: var(--serif); font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 300; line-height: 1.1; }
+.resumen-pendiente p:not(.pronto__sello) { color: var(--texto-suave); }
+.resumen-pendiente .boton { margin-top: 1.8rem; }
+.resumen__intro { max-width: 60ch; margin-bottom: 2.5rem; color: var(--texto-suave); font-family: var(--serif); font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 300; line-height: 1.5; }
+.resumen .lo-mejor { margin-bottom: 1rem; }
+
+/* Botón sobre fondo claro */
+.boton--claro { background: #0b0f14; border-color: #0b0f14; color: #f4fbff; }
+.boton--claro:hover { color: #0b0f14; }
+
+/* Invitación al diario en la portada */
+.al-diario { text-align: center; }
+.al-diario .antetitulo { justify-content: center; }
+.al-diario .seccion__intro { margin-inline: auto; }
+.al-diario .boton { margin-top: 2rem; }
