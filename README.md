@@ -145,6 +145,14 @@ Para usar **tus** fotos:
 
 Si un nombre de Commons está mal escrito, la foto simplemente no aparece (no se rompe nada).
 
+## Diseño mixto: noche → día → noche
+
+La portada, el mapa y el pie son "de noche" (fondo oscuro con aurora). Las secciones
+de lectura llevan la clase `tema-claro` (fondo blanco nieve) y se enlazan con degradados
+de amanecer (`amanecer`) y anochecer (`anochecer`). Para cambiar una sección de tema,
+basta con añadir o quitar esa clase en el HTML: los colores se ajustan solos
+(sección 15 de `css/estilos.css`).
+
 ## Rendimiento: por qué el cielo va en canvas
 
 Las animaciones CSS infinitas (aurora, estrellas, niebla…) obligan al navegador a

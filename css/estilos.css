@@ -16,6 +16,7 @@
    12. Pie de página y menú inferior móvil
    13. Leaflet (marcadores, ventanas)
    14. Animaciones, transiciones de página y movimiento reducido
+   15. Tema claro (diseño mixto noche → día → noche)
    ===================================================================== */
 
 /* =====================================================================
@@ -1985,3 +1986,160 @@ body.pagina-saliendo { opacity: 0; filter: blur(4px); }
 /* Las animaciones infinitas se pausan cuando su zona sale de la pantalla
    (la clase la pone efectos.js). Así no gastan CPU mientras lees más abajo. */
 .fuera-de-vista, .fuera-de-vista * { animation-play-state: paused !important; }
+
+/* =====================================================================
+   15. TEMA CLARO (diseño mixto: noche → día → noche)
+   ---------------------------------------------------------------------
+   La portada, el mapa y el pie siguen "de noche". Las secciones con la
+   clase .tema-claro (antes del viaje, los días, el resumen y el texto de
+   cada día) pasan a blanco nieve. Basta con redefinir las variables de
+   color: casi todos los componentes las usan, y aquí solo ajustamos los
+   que tenían un color fijo pensado para fondo oscuro.
+   ===================================================================== */
+.tema-claro {
+  --fondo-claro: #f4fbff;
+  --texto-fuerte: #0b0f14;
+  --texto: #16202a;
+  --texto-suave: rgb(22 32 42 / 0.8);
+  --texto-tenue: rgb(22 32 42 / 0.66);   /* contraste ≈ 5,3:1 sobre el fondo */
+  --borde: rgb(11 15 20 / 0.09);
+  --borde-fuerte: rgb(11 15 20 / 0.2);
+  --glaciar-oscuro: #17708a;             /* el azul glaciar original no se lee sobre blanco */
+  --degradado-aurora: linear-gradient(100deg, #0f9e67, #1b8fb3 45%, #6a4ee6);
+  background-color: var(--fondo-claro);
+  color: var(--texto);
+}
+/* Versión oscurecida del color de cada día, legible sobre blanco (AA).
+   Se declara en cada elemento para que use el --color de su tarjeta. */
+.tema-claro, .tema-claro * { --color-texto: color-mix(in srgb, var(--color) 42%, #06121c); }
+.tema-claro :focus-visible { outline-color: var(--glaciar-oscuro); }
+.tema-claro ::selection { background: rgb(23 112 138 / 0.2); color: var(--texto-fuerte); }
+
+/* Amanecer: la primera sección clara empieza con un degradado desde la noche */
+.amanecer {
+  padding-top: calc(clamp(5rem, 13vw, 10rem) + 240px);
+  background-image: linear-gradient(180deg,
+    var(--negro) 0, #12233a 70px, #3a5a78 140px, #b9c9d6 220px, #ecdcd6 270px, var(--fondo-claro) 360px);
+}
+/* Anochecer: la última sección clara termina fundiéndose con el pie oscuro */
+.anochecer {
+  padding-bottom: calc(clamp(5rem, 13vw, 10rem) + 200px);
+  background-image: linear-gradient(0deg,
+    var(--negro) 0, #12233a 60px, #3a5a78 120px, #b9c9d6 190px, var(--fondo-claro) 300px);
+}
+
+/* --- Tarjetas de vidrio en claro --- */
+.tema-claro .vidrio {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.92), rgb(255 255 255 / 0.62));
+  box-shadow: 0 1px 0 #fff inset, 0 30px 60px -36px rgb(16 42 62 / 0.28);
+}
+.tema-claro .vidrio::before {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgb(23 112 138 / 0.08), transparent 45%);
+}
+
+/* --- Títulos y textos --- */
+.tema-claro .seccion__titulo,
+.tema-claro .subtitulo,
+.tema-claro .dia-tarjeta__titulo,
+.tema-claro .linea-tiempo__titulo,
+.tema-claro .lo-mejor__titulo { color: var(--texto-fuerte); }
+.tema-claro .antetitulo { color: var(--texto-suave); }
+.tema-claro .antetitulo span { color: var(--glaciar-oscuro); }
+.tema-claro .antetitulo span::after { background: linear-gradient(90deg, var(--glaciar-oscuro), transparent); }
+.tema-claro .etiqueta-borrador { color: var(--texto-suave); }
+
+/* --- Antes del viaje --- */
+.tema-claro .linea-tiempo__punto { background: var(--fondo-claro); border-color: var(--color-texto); box-shadow: 0 0 0 4px var(--fondo-claro), 0 0 10px var(--color); }
+.tema-claro .linea-tiempo__fecha { color: var(--color-texto); }
+.tema-claro .luz__dia { color: var(--glaciar-oscuro); }
+.tema-claro .luz__pista { background: rgb(11 15 20 / 0.07); }
+.tema-claro .luz__pista::before { background: rgb(11 15 20 / 0.14); }
+.tema-claro .luz__barra { background: linear-gradient(90deg, #ffbf7a, #ffe2b3 50%, #ff8f66); box-shadow: 0 0 10px rgb(255 170 110 / 0.45); }
+.tema-claro .luz__horas { color: var(--texto-fuerte); }
+.tema-claro .maleta__grupo legend { color: var(--glaciar-oscuro); }
+.tema-claro .casilla { border-bottom-color: rgb(11 15 20 / 0.06); }
+.tema-claro .casilla__marca::after { border-color: #fff; }
+.tema-claro .enlace-util__flecha { color: var(--glaciar-oscuro); }
+
+/* --- Tarjetas de los días --- */
+.tema-claro .dia-tarjeta__fecha,
+.tema-claro .dia-tarjeta__etiqueta,
+.tema-claro .dia-tarjeta__lugar svg,
+.tema-claro .dia-tarjeta__leer span { color: var(--color-texto); }
+.tema-claro .dia-tarjeta__leer { color: var(--texto-fuerte); }
+.tema-claro .dia-tarjeta__numero { -webkit-text-stroke-color: color-mix(in srgb, var(--color) 70%, #06121c); }
+.tema-claro .miniatura, .tema-claro .galeria__item { background: #e3edf3; }
+.tema-claro .miniatura--hueco {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--color) 22%, transparent), transparent 60%), #eaf3f8;
+}
+.tema-claro .escarcha {
+  background:
+    radial-gradient(60% 50% at 0% 100%, rgb(255 255 255 / 0.7), transparent 70%),
+    radial-gradient(50% 40% at 100% 0%, rgb(207 238 250 / 0.5), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .98 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, rgb(255 255 255 / 0.35), rgb(207 238 250 / 0.3));
+}
+.tema-claro .escarcha__sello { border-color: rgb(11 15 20 / 0.15); background: rgb(11 15 20 / 0.82); }
+.tema-claro .escarcha__fecha { color: var(--texto-fuerte); text-shadow: 0 1px 8px rgb(255 255 255 / 0.9); }
+
+/* --- Resumen --- */
+.tema-claro .tabla tfoot th, .tema-claro .tabla tfoot td { color: var(--texto-fuerte); }
+.tema-claro .tabla td.mas { color: #b4532a; }
+.tema-claro .tabla td.menos { color: #0f7a52; }
+.tema-claro .consejos li::before { color: var(--glaciar-oscuro); }
+.tema-claro .galeria__item--hueco {
+  background:
+    radial-gradient(70% 60% at 30% 20%, rgb(127 209 232 / 0.25), transparent 70%),
+    radial-gradient(60% 60% at 80% 90%, rgb(138 107 255 / 0.15), transparent 70%),
+    #eaf3f8;
+}
+
+/* --- Página de un día --- */
+.tema-claro .articulo h2, .tema-claro .articulo h3,
+.tema-claro .articulo strong { color: var(--texto-fuerte); }
+.tema-claro .articulo > p:first-of-type::first-letter { color: var(--color-texto); }
+.tema-claro .articulo a { color: var(--glaciar-oscuro); }
+.tema-claro .articulo a:hover { color: #0f7a52; }
+.tema-claro .articulo blockquote { color: var(--texto); }
+.tema-claro .articulo li::marker { color: var(--glaciar-oscuro); }
+.tema-claro .articulo code { background: rgb(11 15 20 / 0.06); }
+.tema-claro .pronto__sello { border-color: rgb(11 15 20 / 0.25); color: var(--texto-fuerte); }
+.tema-claro .pronto__titulo, .tema-claro .pronto__nota { color: var(--texto-fuerte); }
+.tema-claro .paradas li::before { border-color: var(--color-texto); color: var(--color-texto); }
+.tema-claro .dia-lateral .dia-tarjeta__etiqueta { color: var(--color-texto); }
+.tema-claro .anterior-siguiente__dir { color: var(--color-texto); }
+.zona-clara { padding-bottom: 1px; }   /* evita que los márgenes "se escapen" del fondo */
+.zona-clara.amanecer { padding-top: 220px; }
+.zona-clara.anochecer { padding-bottom: 200px; }
+
+/* --- Cabecera sobre zonas claras (la clase la pone efectos.js) --- */
+.cabecera--clara.cabecera--solida {
+  background: rgb(244 251 255 / 0.8);
+  border-bottom-color: rgb(11 15 20 / 0.08);
+  color: #0b0f14;
+}
+.cabecera--clara .cabecera__logo, .cabecera--clara .cabecera__anio { color: #17708a; }
+.cabecera--clara .cabecera__menu a { color: rgb(22 32 42 / 0.8); }
+.cabecera--clara .cabecera__menu a:hover { color: #0b0f14; }
+.cabecera--clara .cabecera__menu-boton { background: rgb(255 255 255 / 0.7); border-color: rgb(11 15 20 / 0.12); }
+@media (max-width: 899px) {
+  .cabecera--clara .cabecera__menu { background: rgb(255 255 255 / 0.95); border-color: rgb(11 15 20 / 0.1); }
+  .cabecera--clara .cabecera__menu a:hover { background: rgb(11 15 20 / 0.05); }
+}
+/* Zona con amanecer arriba y anochecer abajo (página de un día) */
+.amanecer.anochecer {
+  background-image:
+    linear-gradient(180deg, var(--negro) 0, #12233a 60px, #3a5a78 120px, #b9c9d6 175px, #ecdcd6 210px, var(--fondo-claro) 280px),
+    linear-gradient(0deg, var(--negro) 0, #12233a 60px, #3a5a78 120px, #b9c9d6 170px, var(--fondo-claro) 260px);
+  background-repeat: no-repeat;
+  background-size: 100% 280px, 100% 260px;
+  background-position: top, bottom;
+}
+/* Menú inferior sobre zonas claras */
+.nav-dias { transition: background-color 0.4s, border-color 0.4s; }
+.nav-dias--clara { background: rgb(244 251 255 / 0.96); border-top-color: rgb(11 15 20 / 0.08); }
+.nav-dias--clara .nav-dias__pista { background: rgb(11 15 20 / 0.1); }
+.nav-dias--clara .nav-dias__circulo { background: #f4fbff; border-color: rgb(11 15 20 / 0.25); }
+.nav-dias--clara .nav-dias__num, .nav-dias--clara .nav-dias__texto { color: rgb(22 32 42 / 0.66); }
+.nav-dias--clara .nav-dias__punto.es-activo .nav-dias__circulo { border-color: #0b0f14; box-shadow: 0 0 0 4px rgb(23 112 138 / 0.2); }
+.nav-dias--clara .nav-dias__punto.es-activo .nav-dias__num { color: #0b0f14; }

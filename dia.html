@@ -73,28 +73,31 @@
       </div>
     </section>
 
-    <div class="contenedor dia-cuerpo">
-      <article id="texto" class="articulo" data-articulo></article>
+    <!-- Zona clara: amanece al bajar desde la cabecera y anochece antes del pie -->
+    <div class="tema-claro zona-clara amanecer anochecer">
+      <div class="contenedor dia-cuerpo">
+        <article id="texto" class="articulo" data-articulo></article>
 
-      <aside class="dia-lateral" aria-label="Datos del día">
-        <div class="panel vidrio dia-lateral__mapa">
-          <h2 class="subtitulo">Mapa del día</h2>
-          <div id="mapa-dia" class="mapa mapa--dia" role="region" aria-label="Mapa de las paradas del día"></div>
-          <ol class="paradas" data-paradas></ol>
-        </div>
-        <div class="panel vidrio dia-lateral__mejor" data-mejor hidden>
-          <p class="dia-tarjeta__etiqueta">Lo mejor del día</p>
-          <p class="dia-lateral__cita" data-mejor-texto></p>
-        </div>
-      </aside>
+        <aside class="dia-lateral" aria-label="Datos del día">
+          <div class="panel vidrio dia-lateral__mapa">
+            <h2 class="subtitulo">Mapa del día</h2>
+            <div id="mapa-dia" class="mapa mapa--dia" role="region" aria-label="Mapa de las paradas del día"></div>
+            <ol class="paradas" data-paradas></ol>
+          </div>
+          <div class="panel vidrio dia-lateral__mejor" data-mejor hidden>
+            <p class="dia-tarjeta__etiqueta">Lo mejor del día</p>
+            <p class="dia-lateral__cita" data-mejor-texto></p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="contenedor dia-galeria" aria-labelledby="titulo-galeria" data-seccion-galeria>
+        <h2 id="titulo-galeria" class="subtitulo subtitulo--centro">Galería</h2>
+        <div class="galeria" id="galeria"></div>
+      </section>
+
+      <nav class="contenedor anterior-siguiente" aria-label="Otros días" data-anterior-siguiente></nav>
     </div>
-
-    <section class="contenedor dia-galeria" aria-labelledby="titulo-galeria" data-seccion-galeria>
-      <h2 id="titulo-galeria" class="subtitulo subtitulo--centro">Galería</h2>
-      <div class="galeria" id="galeria"></div>
-    </section>
-
-    <nav class="contenedor anterior-siguiente" aria-label="Otros días" data-anterior-siguiente></nav>
   </main>
 
   <footer class="pie pie--simple">
