@@ -76,6 +76,23 @@ export function pintarGaleria(contenedor, fotos, { titulo = 'Foto' } = {}) {
   });
 }
 
+/** Las fotos metidas dentro del texto (![pie](foto.jpg)) se amplían al tocarlas. */
+export function activarFotosDelTexto(contenedor) {
+  const imagenes = [...contenedor.querySelectorAll('.figura-texto img')];
+  if (!imagenes.length) return;
+  const fotos = imagenes.map((img) => ({ src: img.currentSrc || img.src, pie: img.alt }));
+  imagenes.forEach((img, i) => {
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', `Ampliar foto${img.alt ? ': ' + img.alt : ''}`);
+    const abrir = () => abrirVisor(fotos, i, img);
+    img.addEventListener('click', abrir);
+    img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
+    // Si una foto no existe (nombre mal escrito), quitamos su hueco
+    img.addEventListener('error', () => img.closest('.figura-texto')?.remove());
+  });
+}
+
 /* ---------------------------------------------------------------------
    Visor (lightbox)
    --------------------------------------------------------------------- */

@@ -11,9 +11,11 @@ HTML, CSS y JavaScript puro: **sin frameworks y sin paso de build**.
 
 ```
 /
-├── index.html          Portada: hero, mapa, antes del viaje, los 5 días, resumen
-├── dia.html            Página de un día (dia.html?n=1 … ?n=5)
-├── datos-viaje.json    Costes, qué llevar, enlaces, resumen final y trazado de la ruta
+├── index.html          Pestaña «El viaje»: portada, mapa y cómo va a ser el viaje
+├── diario.html         Pestaña «Diario»: los 5 días seguidos, con texto y fotos
+├── resumen.html        Pestaña «Resumen»: se escribe al volver
+├── dia.html            Página de un día suelto (dia.html?n=1 … ?n=5) con mapa y galería
+├── datos-viaje.json    Enlaces, resumen final (al volver) y trazado de la ruta
 ├── entradas/           Un Markdown por día (dia-1.md … dia-5.md)
 ├── fotos/
 │   ├── portada.jpg     (opcional) fondo del hero
@@ -27,6 +29,8 @@ HTML, CSS y JavaScript puro: **sin frameworks y sin paso de build**.
 │   ├── mapa.js         Mapas Leaflet (se cargan solo cuando van a verse)
 │   ├── galeria.js      Mosaico + visor con gestos
 │   ├── inicio.js       Lógica de index.html
+│   ├── diario.js       Lógica de diario.html
+│   ├── resumen.js      Lógica de resumen.html
 │   └── dia.js          Lógica de dia.html
 ├── generar.js          (opcional) comprime fotos, crea WebP y fotos.json
 └── .nojekyll           Evita que GitHub Pages procese los .md con Jekyll
@@ -73,19 +77,23 @@ Todo se hace desde el navegador del móvil en **github.com** (no hace falta orde
 
 1. Entra en el repositorio → carpeta `entradas` → `dia-N.md`.
 2. Pulsa el lápiz ✏️ (*Edit this file*).
-3. Escribe debajo del segundo `---` en Markdown:
+3. Escribe debajo del segundo `---`, como un diario: «Hoy el día empezó…». Puedes usar:
    - `## Título de apartado`
    - `**negrita**`, `*cursiva*`, `[enlace](https://…)`
    - `> cita destacada`
    - `- elemento de lista`
-   - `![pie de foto](fotos/dia-N/foto.jpg)` para meter una foto dentro del texto
+   - **Fotos dentro del texto**: en una línea sola, `![Lo que pone debajo de la foto](IMG_1234.jpg)`.
+     Basta con el nombre del archivo: se busca solo en `fotos/dia-N/`. Ponla donde quieras
+     que aparezca, entre párrafos. Al tocarla se ve a pantalla completa.
 4. Cambia `publicado: false` → `publicado: true` y revisa `lo_mejor`.
 5. Pulsa **Commit changes**. En un minuto está publicado.
 
 **Fotos**
 
 1. Ve a la carpeta `fotos/dia-N` → **Add file → Upload files** → elige las fotos → *Commit*.
-2. Ya está: la web encuentra sola las fotos de la carpeta (usa la API pública de GitHub).
+2. Escribe en el texto `![pie](nombre-de-la-foto.jpg)` donde quieras que salga cada una.
+3. Las fotos de la carpeta que no pongas en el texto aparecen en la galería de la página
+   del día (dia.html?n=N), que la web encuentra sola (usa la API pública de GitHub).
 3. *(Opcional)* si quieres decidir el orden y poner pies de foto, añádelas al front matter:
 
    ```yaml
@@ -121,16 +129,21 @@ Todo se hace desde el navegador del móvil en **github.com** (no hace falta orde
 
 Con `confirmada: false` la parada sale en el mapa con borde discontinuo y más transparente.
 
-### datos-viaje.json
+### Las tres pestañas
 
-Costes (`previsto` / `real`; deja `real: null` hasta saberlo), lista de *qué llevar*,
-enlaces útiles, textos del resumen final (`publicado: true` quita la etiqueta de borrador),
-`top_fotos` (`[{ "src": "fotos/dia-3/IMG_1.jpg", "pie": "…" }]`) y los puntos de la ruta.
-Cuidado con las comas: si el JSON tiene un error, la consola del navegador lo indica.
+- **El viaje** (`index.html`): portada, mapa de la ruta, itinerario, horas de luz y enlaces.
+- **Diario** (`diario.html`): los 5 días seguidos, con un índice arriba para saltar a cada uno.
+  Los días con `publicado: false` salen como «Próximamente».
+- **Resumen** (`resumen.html`): mientras `resumen.publicado` sea `false` en
+  `datos-viaje.json` solo dice «lo escribiré al volver». Al volver se rellenan `intro`,
+  `lo_mejor`, `costes` (`[{ "concepto": "Vuelos", "real": 160 }]`), `consejos` y
+  `top_fotos`, y se pone `publicado: true`. Lo que esté vacío no se muestra.
+
+Cuidado con las comas en `datos-viaje.json`: si tiene un error, la consola del navegador lo indica.
 
 ## Fotos de ejemplo (Wikimedia Commons)
 
-Hasta que tengas tus fotos, la portada, la cabecera de cada día y el "Top de fotos"
+Hasta que tengas tus fotos, la portada y la cabecera de cada día
 usan fotos con licencia libre de [Wikimedia Commons](https://commons.wikimedia.org),
 enlazadas directamente y con su crédito (autor y licencia), como piden sus licencias.
 
@@ -141,7 +154,7 @@ Para usar **tus** fotos:
 
 - Portada: sube `fotos/portada.jpg` (tiene prioridad sobre la de ejemplo).
 - Cada día: cambia `portada: "commons:…"` por `portada: "IMG_1234.jpg"` y borra `portada_credito`.
-- Top de fotos: en `datos-viaje.json`, cambia `top_fotos` por tus fotos.
+- Fotos favoritas del resumen: en `datos-viaje.json`, en `top_fotos`.
 
 Si un nombre de Commons está mal escrito, la foto simplemente no aparece (no se rompe nada).
 

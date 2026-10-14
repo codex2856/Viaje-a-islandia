@@ -1,21 +1,21 @@
 /* =====================================================================
    inicio.js · Lógica de la página principal (index.html)
    ---------------------------------------------------------------------
-   1. Arranca los efectos comunes y la nieve.
+   1. Arranca los efectos comunes y el cielo animado.
    2. Detecta la foto de portada.
    3. Cuenta atrás / "Día X de 5".
-   4. Lee los datos y pinta: mapa, itinerario, horas de luz, maleta,
-      enlaces, tarjetas de los días, resumen y mini mapa.
+   4. Lee los datos y pinta: mapa, itinerario, horas de luz, enlaces
+      y mini mapa. (El diario y el resumen tienen su propia página.)
    ===================================================================== */
 
 import {
-  TOTAL_DIAS, cargarDatosViaje, cargarEntradas, cargarFotos, construirFoto, escaparHTML,
+  TOTAL_DIAS, cargarDatosViaje, cargarEntradas, escaparHTML,
   estadoViaje, formatearFecha, resolverImagen,
 } from './datos.js';
-import { alCargar, iniciarEfectosComunes, observarReveal, observarParallax, pintarNavegacionDias } from './efectos.js';
+import { alCargar, iniciarEfectosComunes, observarReveal } from './efectos.js';
 import { iniciarCielo } from './cielo.js';
 import { crearMapaRuta, crearMiniMapa, cuandoSeaVisible, COLOR_DIA } from './mapa.js';
-import { htmlImagen, htmlHuecos, pintarCredito, pintarGaleria, ponerFondo } from './galeria.js';
+import { pintarCredito, ponerFondo } from './galeria.js';
 
 iniciarEfectosComunes();
 // El cielo animado (aurora, estrellas y nieve) arranca cuando la página ya ha cargado (no compite con el primer pintado)
@@ -74,13 +74,13 @@ function iniciarCuentaAtras(sitio) {
   if (estado.fase === 'durante') {
     caja.innerHTML = `
       <p class="cuenta__etiqueta">Estamos en Islandia</p>
-      <a class="cuenta__dia" href="dia.html?n=${estado.dia}">Día <strong>${estado.dia}</strong> de ${TOTAL_DIAS}</a>`;
+      <a class="cuenta__dia" href="diario.html#dia-${estado.dia}">Día <strong>${estado.dia}</strong> de ${TOTAL_DIAS}</a>`;
     return;
   }
   if (estado.fase === 'despues') {
     caja.innerHTML = `
       <p class="cuenta__etiqueta">Viaje completado</p>
-      <a class="cuenta__dia" href="#resumen">5 días · <strong>1</strong> isla</a>`;
+      <a class="cuenta__dia" href="resumen.html">5 días · <strong>1</strong> isla</a>`;
     return;
   }
 
@@ -123,7 +123,7 @@ function pintarLineaTiempo(entradas) {
     <li class="linea-tiempo__item" data-reveal style="--color:${COLOR_DIA[e.numero]}">
       <span class="linea-tiempo__punto" aria-hidden="true"></span>
       <p class="linea-tiempo__fecha">Día ${e.numero} · ${escaparHTML(formatearFecha(e.fecha))}</p>
-      <h4 class="linea-tiempo__titulo"><a href="dia.html?n=${e.numero}">${escaparHTML(e.lugar)}</a></h4>
+      <h4 class="linea-tiempo__titulo"><a href="diario.html#dia-${e.numero}">${escaparHTML(e.lugar)}</a></h4>
       <p class="linea-tiempo__texto">${escaparHTML(e.resumen)}</p>
     </li>`).join('');
 }
@@ -153,42 +153,6 @@ function pintarHorasLuz(entradas) {
   if (celda && total) celda.textContent = `${Math.round(total / 60)} h`;
 }
 
-const CLAVE_MALETA = 'islandia-maleta-v1';
-
-function pintarMaleta(categorias = []) {
-  let marcados = {};
-  try { marcados = JSON.parse(localStorage.getItem(CLAVE_MALETA) || '{}'); } catch { marcados = {}; }
-
-  // Identificador estable para cada casilla, a partir de su texto
-  const id = (texto) => 'm-' + texto.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-  const contenedor = document.getElementById('maleta');
-  contenedor.innerHTML = categorias.map((cat) => `
-    <fieldset class="maleta__grupo">
-      <legend>${escaparHTML(cat.categoria)}</legend>
-      ${cat.items.map((item) => `
-        <label class="casilla">
-          <input type="checkbox" id="${id(item)}" ${marcados[id(item)] ? 'checked' : ''}>
-          <span class="casilla__marca" aria-hidden="true"></span>
-          <span class="casilla__texto">${escaparHTML(item)}</span>
-        </label>`).join('')}
-    </fieldset>`).join('');
-
-  const contador = document.getElementById('contador-maleta');
-  const actualizar = () => {
-    const casillas = contenedor.querySelectorAll('input');
-    const hechas = [...casillas].filter((c) => c.checked).length;
-    contador.textContent = `${hechas}/${casillas.length}`;
-    contador.classList.toggle('completo', hechas === casillas.length && hechas > 0);
-  };
-  contenedor.addEventListener('change', (e) => {
-    marcados[e.target.id] = e.target.checked;
-    try { localStorage.setItem(CLAVE_MALETA, JSON.stringify(marcados)); } catch { /* modo privado */ }
-    actualizar();
-  });
-  actualizar();
-}
-
 function pintarEnlaces(enlaces = []) {
   document.getElementById('enlaces').innerHTML = enlaces.map((e) => `
     <li>
@@ -201,120 +165,6 @@ function pintarEnlaces(enlaces = []) {
 }
 
 /* ---------------------------------------------------------------------
-   Tarjetas de los 5 días
-   --------------------------------------------------------------------- */
-function htmlTarjetaDia(e, fotos) {
-  const miniaturas = fotos.slice(0, 3);
-  const fecha = escaparHTML(formatearFecha(e.fecha));
-  const fondo = e.portada ? resolverImagen(e.portada, `fotos/dia-${e.numero}`, 1200) : '';
-  return `
-    <article class="dia-tarjeta vidrio ${e.publicado ? '' : 'dia-tarjeta--pronto'}" id="dia-${e.numero}"
-             style="--color:${COLOR_DIA[e.numero]}" data-reveal>
-      ${fondo ? `<div class="dia-tarjeta__foto" aria-hidden="true"><span data-parallax="-0.08" style="background-image:url('${escaparHTML(fondo)}')"></span></div>` : ''}
-      <span class="dia-tarjeta__numero" data-parallax="0.12" aria-hidden="true"
-            style="view-transition-name: numero-dia-${e.numero}">${e.numero}</span>
-      <div class="dia-tarjeta__cuerpo">
-        <p class="dia-tarjeta__fecha">Día ${e.numero} · ${fecha}</p>
-        <h3 class="dia-tarjeta__titulo">
-          <a href="dia.html?n=${e.numero}" class="enlace-tarjeta">${escaparHTML(e.titulo)}</a>
-        </h3>
-        <p class="dia-tarjeta__lugar">
-          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
-          ${escaparHTML(e.lugar)}
-        </p>
-        ${e.lo_mejor ? `
-        <blockquote class="dia-tarjeta__mejor">
-          <span class="dia-tarjeta__etiqueta">Lo mejor del día</span>
-          <p>${escaparHTML(e.lo_mejor)}</p>
-        </blockquote>` : ''}
-        <div class="dia-tarjeta__miniaturas" aria-hidden="true">
-          ${miniaturas.length
-            ? miniaturas.map((f) => `<span class="miniatura">${htmlImagen(f, { sizes: '160px', alt: '' })}</span>`).join('')
-            : '<span class="miniatura miniatura--hueco"></span><span class="miniatura miniatura--hueco"></span><span class="miniatura miniatura--hueco"></span>'}
-        </div>
-        <span class="dia-tarjeta__leer" aria-hidden="true">${e.publicado ? 'Leer el día' : 'Ver el plan'} <span>→</span></span>
-      </div>
-      ${e.publicado ? '' : `
-      <div class="escarcha" aria-hidden="true">
-        <span class="escarcha__sello">Próximamente</span>
-        <span class="escarcha__fecha">${fecha}</span>
-      </div>`}
-    </article>`;
-}
-
-async function pintarDias(entradas, datos) {
-  const lista = document.getElementById('lista-dias');
-  // Primero pintamos sin fotos (rápido) y luego, cuando lleguen, con miniaturas
-  lista.innerHTML = entradas.map((e) => htmlTarjetaDia(e, [])).join('');
-  observarReveal(lista);
-  observarParallax(lista);
-
-  const fotosPorDia = await Promise.all(entradas.map((e) => (e.publicado ? cargarFotos(e, datos) : [])));
-  entradas.forEach((e, i) => {
-    if (!fotosPorDia[i].length) return;
-    const tarjeta = document.getElementById(`dia-${e.numero}`);
-    tarjeta.querySelector('.dia-tarjeta__miniaturas').innerHTML = fotosPorDia[i].slice(0, 3)
-      .map((f) => `<span class="miniatura">${htmlImagen(f, { sizes: '160px', alt: '' })}</span>`).join('');
-  });
-}
-
-/* ---------------------------------------------------------------------
-   Resumen final
-   --------------------------------------------------------------------- */
-function pintarResumen(resumen = {}) {
-  const seccion = document.getElementById('resumen');
-  seccion.classList.toggle('seccion--borrador', !resumen.publicado);
-  document.getElementById('resumen-intro').textContent = resumen.intro || '';
-
-  if (!resumen.publicado) {
-    seccion.querySelector('.seccion__cabecera').insertAdjacentHTML('beforeend',
-      '<p class="etiqueta-borrador">Borrador · se completará a la vuelta</p>');
-  }
-
-  document.getElementById('resumen-lo-mejor').innerHTML = (resumen.lo_mejor || []).map((m, i) => `
-    <article class="lo-mejor__item vidrio" data-reveal style="--i:${i}">
-      <span class="lo-mejor__num" aria-hidden="true">0${i + 1}</span>
-      <h3 class="lo-mejor__titulo">${escaparHTML(m.titulo)}</h3>
-      <p>${escaparHTML(m.texto)}</p>
-    </article>`).join('');
-
-  // Tabla de costes: "real" vacío → se muestra "—" y el total usa lo previsto
-  const moneda = resumen.moneda || '€';
-  const formato = (n) => (n == null ? '—' : `${new Intl.NumberFormat('es-ES').format(n)} ${moneda}`);
-  const costes = resumen.costes || [];
-  const totalPrevisto = costes.reduce((s, c) => s + (Number(c.previsto) || 0), 0);
-  const conReal = costes.filter((c) => c.real != null);
-  const totalReal = conReal.reduce((s, c) => s + Number(c.real), 0);
-  document.getElementById('tabla-costes').innerHTML = `
-    <table class="tabla">
-      <caption class="visualmente-oculto">Costes previstos y reales del viaje</caption>
-      <thead><tr><th scope="col">Concepto</th><th scope="col">Previsto</th><th scope="col">Real</th></tr></thead>
-      <tbody>
-        ${costes.map((c) => {
-          const diferencia = c.real != null && c.previsto != null ? c.real - c.previsto : null;
-          return `<tr>
-            <th scope="row">${escaparHTML(c.concepto)}</th>
-            <td>${formato(c.previsto)}</td>
-            <td class="${diferencia > 0 ? 'mas' : diferencia < 0 ? 'menos' : ''}">${formato(c.real)}</td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-      <tfoot><tr><th scope="row">Total</th><td>${formato(totalPrevisto)}</td><td>${conReal.length ? formato(totalReal) : '—'}</td></tr></tfoot>
-    </table>`;
-
-  document.getElementById('consejos').innerHTML = (resumen.consejos || [])
-    .map((c) => `<li data-reveal>${escaparHTML(c)}</li>`).join('');
-
-  const top = (resumen.top_fotos || []).filter((f) => f.src)
-    .map((f) => construirFoto('fotos', String(f.src), f.pie, null, f.credito));
-  const galeria = document.getElementById('top-fotos');
-  if (top.length) pintarGaleria(galeria, top, { titulo: 'Top' });
-  else galeria.innerHTML = htmlHuecos(6, 'Pronto');
-
-  observarReveal(seccion);
-}
-
-/* ---------------------------------------------------------------------
    Arranque: cargar datos y pintar todo
    --------------------------------------------------------------------- */
 async function iniciar() {
@@ -322,13 +172,9 @@ async function iniciar() {
 
   detectarFotoPortada(datos.sitio);
   iniciarCuentaAtras(datos.sitio);
-  pintarNavegacionDias(entradas);
   pintarLineaTiempo(entradas);
   pintarHorasLuz(entradas);
-  pintarMaleta(datos.que_llevar);
   pintarEnlaces(datos.enlaces);
-  pintarResumen(datos.resumen);
-  pintarDias(entradas, datos);
   observarReveal();
 
   const totalParadas = entradas.reduce((s, e) => s + e.paradas.length, 0);
