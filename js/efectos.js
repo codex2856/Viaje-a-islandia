@@ -6,7 +6,6 @@
    - Aparición suave de elementos al hacer scroll   [data-reveal]
    - Parallax                                       [data-parallax="0.2"]
    - Brillo que sigue al cursor en tarjetas         .vidrio
-   - Cursor personalizado (solo escritorio)
    - Transiciones entre páginas (View Transitions + alternativa)
    - Menú inferior del móvil con los 5 días
    ===================================================================== */
@@ -17,8 +16,9 @@ const movimientoReducido = matchMedia('(prefers-reduced-motion: reduce)').matche
 const esEscritorio = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 /** Ejecuta `fn` cuando la página ha terminado de cargar y el navegador está libre. */
-export function alCargar(fn) {
-  const ejecutar = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 600));
+export function alCargar(fn, retraso = 0) {
+  const lanzar = () => setTimeout(fn, retraso);
+  const ejecutar = () => ('requestIdleCallback' in window ? requestIdleCallback(lanzar, { timeout: 2000 }) : setTimeout(lanzar, 600));
   if (document.readyState === 'complete') ejecutar();
   else addEventListener('load', ejecutar, { once: true });
 }
@@ -124,36 +124,6 @@ function iniciarBrillo() {
   }, { passive: true });
 }
 
-/* ---------- Cursor personalizado ---------- */
-function iniciarCursor() {
-  if (!esEscritorio || movimientoReducido) return;
-  const punto = document.createElement('div');
-  const anillo = document.createElement('div');
-  punto.className = 'cursor-punto';
-  anillo.className = 'cursor-anillo';
-  punto.setAttribute('aria-hidden', 'true');
-  anillo.setAttribute('aria-hidden', 'true');
-  document.body.append(punto, anillo);
-  document.documentElement.classList.add('con-cursor');
-
-  let x = -100, y = -100, ax = -100, ay = -100;
-  addEventListener('pointermove', (e) => {
-    x = e.clientX; y = e.clientY;
-    punto.style.transform = `translate(${x}px, ${y}px)`;
-    const interactivo = e.target.closest?.('a, button, [role="button"], input, label, .leaflet-marker-icon');
-    anillo.classList.toggle('cursor-anillo--activo', Boolean(interactivo));
-  }, { passive: true });
-  document.addEventListener('pointerleave', () => { x = y = -100; });
-
-  // El anillo sigue al punto con retraso (interpolación lineal)
-  (function seguir() {
-    ax += (x - ax) * 0.18;
-    ay += (y - ay) * 0.18;
-    anillo.style.transform = `translate(${ax}px, ${ay}px)`;
-    requestAnimationFrame(seguir);
-  })();
-}
-
 /* ---------- Transiciones entre páginas ---------- */
 function iniciarTransiciones() {
   // Chrome/Edge/Safari modernos: View Transitions entre documentos (definido en CSS
@@ -217,14 +187,25 @@ function iniciarMenu() {
   addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
 }
 
+/* ---------- Pausar animaciones fuera de pantalla ---------- */
+// La aurora, las estrellas, la niebla y los pulsos del mapa son animaciones
+// infinitas. Cuando su zona no se ve, les ponemos .fuera-de-vista (en CSS:
+// animation-play-state: paused) para que no gasten CPU.
+function pausarFueraDeVista() {
+  const obs = new IntersectionObserver((entradas) => {
+    for (const e of entradas) e.target.classList.toggle('fuera-de-vista', !e.isIntersecting);
+  });
+  document.querySelectorAll('.hero, .dia-hero, .mapa').forEach((el) => obs.observe(el));
+}
+
 /** Arranca todo lo común. Se llama desde inicio.js y dia.js */
 export function iniciarEfectosComunes() {
   document.documentElement.classList.add('js');
   iniciarScroll();
   iniciarBrillo();
-  iniciarCursor();
   iniciarTransiciones();
   iniciarMenu();
+  pausarFueraDeVista();
   observarReveal();
   observarParallax();
 }

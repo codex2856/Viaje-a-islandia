@@ -5,7 +5,13 @@
     "inicio": "2027-01-30",
     "fin": "2027-02-03",
     "autor": "codex2856",
-    "github": "https://github.com/codex2856"
+    "github": "https://github.com/codex2856",
+    "portada": {
+      "_nota": "Foto de ejemplo para el hero. Si subes fotos/portada.jpg se usará la tuya. Formato: \"commons:Nombre del archivo.jpg\" o una ruta.",
+      "imagen": "commons:Aurora Borealis - Iceland - 2 Nov. 2013.jpg",
+      "credito": "Foto: Francisco Diez · CC BY 2.0 · Wikimedia Commons",
+      "fuente": "https://commons.wikimedia.org/wiki/File:Aurora_Borealis_-_Iceland_-_2_Nov._2013.jpg"
+    }
   },
 
   "repositorio": {
@@ -104,6 +110,14 @@
       "Compra en Bónus o Krónan: comer fuera cuesta el triple.",
       "Nunca le des la espalda al mar en Reynisfjara."
     ],
-    "top_fotos": []
+    "_nota_top_fotos": "Fotos de ejemplo de Wikimedia Commons hasta que tengas las tuyas. Cámbialas por { \"src\": \"fotos/dia-3/IMG_1234.jpg\", \"pie\": \"…\" }.",
+    "top_fotos": [
+      { "src": "commons:Iceland Aurora 1.jpg", "pie": "Aurora sobre Þingvellir", "credito": "Foto: Carl Young · CC BY-SA 4.0 · Wikimedia Commons" },
+      { "src": "commons:Seljalandsfoss (16467797491).jpg", "pie": "Seljalandsfoss en enero", "credito": "Foto: sergejf · CC BY-SA 2.0 · Wikimedia Commons" },
+      { "src": "commons:Skogafoss in winter.jpg", "pie": "Skógafoss en invierno", "credito": "Foto: Martyn Smith · CC BY 2.0 · Wikimedia Commons" },
+      { "src": "commons:Aurora-Igloo-Hella-Iceland.jpg", "pie": "Aurora en Hella", "credito": "Foto: Wikimedia Commons" },
+      { "src": "commons:Reynisfjara and Reynisdrangar, Iceland.jpg", "pie": "Reynisfjara y los Reynisdrangar", "credito": "Foto: Wikimedia Commons" },
+      { "src": "commons:Gullfoss waterfalls.jpg", "pie": "Gullfoss en invierno", "credito": "Foto: Wikimedia Commons" }
+    ]
   }
 }

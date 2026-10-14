@@ -9,15 +9,19 @@
 
 import {
   TOTAL_DIAS, cargarDatosViaje, cargarEntradas, cargarFotos, escaparHTML,
-  formatearFecha, markdownAHTML,
+  formatearFecha, markdownAHTML, resolverImagen,
 } from './datos.js';
 import { alCargar, iniciarEfectosComunes, observarReveal, observarParallax, pintarNavegacionDias } from './efectos.js';
-import { iniciarNieve } from './nieve.js';
+import { iniciarCielo } from './cielo.js';
 import { crearMapaDia, cuandoSeaVisible, COLOR_DIA } from './mapa.js';
-import { pintarGaleria } from './galeria.js';
+import { pintarCredito, pintarGaleria, ponerFondo } from './galeria.js';
 
 iniciarEfectosComunes();
-alCargar(() => iniciarNieve(document.querySelector('.hero__nieve')));
+alCargar(() => iniciarCielo({
+  aurora: document.querySelector('.aurora-canvas'),
+  nieve: document.querySelector('.hero__nieve'),
+  zona: document.querySelector('.dia-hero'),
+}), 1000); // 1 s después de cargar: no compite con el primer pintado
 
 const parametros = new URLSearchParams(location.search);
 const numero = Math.min(TOTAL_DIAS, Math.max(1, parseInt(parametros.get('n'), 10) || 1));
@@ -108,6 +112,9 @@ async function iniciar() {
     mapa.innerHTML = '<p class="mapa__error">No se pudo cargar el mapa.</p>';
   }));
 
+  // Foto de cabecera indicada en "portada:" (se ve aunque el día no esté publicado)
+  if (entrada.portada) ponerFotoCabecera(resolverImagen(entrada.portada, `fotos/dia-${numero}`, 2000), entrada.portada_credito, entrada.portada);
+
   // Galería (solo si el día está publicado o en vista previa)
   const seccionGaleria = $('seccion-galeria');
   if (!entrada.publicado && !verBorrador) { seccionGaleria.hidden = true; return; }
@@ -120,17 +127,19 @@ async function iniciar() {
     seccionGaleria.hidden = true;
   }
 
-  // Foto de cabecera: la indicada en "portada:" o la primera de la galería
-  const portada = entrada.portada ? `fotos/dia-${numero}/${entrada.portada}` : fotos[0]?.src;
-  if (portada) {
-    const img = new Image();
-    img.onload = () => {
-      document.querySelector('.dia-hero__foto-img').style.backgroundImage = `url("${portada}")`;
-      document.querySelector('.dia-hero').classList.add('dia-hero--con-foto');
-      observarParallax();
-    };
-    img.src = portada;
-  }
+  // Sin "portada:", la cabecera usa la primera foto de la galería
+  if (!entrada.portada && fotos[0]) ponerFotoCabecera(fotos[0].src, fotos[0].credito, '');
+}
+
+async function ponerFotoCabecera(url, credito, original) {
+  if (!(await ponerFondo(document.querySelector('.dia-hero__foto-img'), url))) return;
+  document.querySelector('.dia-hero').classList.add('dia-hero--con-foto');
+  // Si es una foto de Commons, el crédito enlaza a su página (donde están autor y licencia)
+  const fuente = String(original).startsWith('commons:')
+    ? `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(original.slice(8).trim().replace(/ /g, '_'))}`
+    : '';
+  pintarCredito(document.querySelector('.dia-hero .credito-foto'), credito, fuente);
+  observarParallax();
 }
 
 iniciar();

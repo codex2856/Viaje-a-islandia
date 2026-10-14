@@ -291,6 +291,7 @@ export async function cargarEntrada(n) {
     lo_mejor: datos.lo_mejor || '',
     resumen: datos.resumen || '',
     portada: datos.portada || '',
+    portada_credito: datos.portada_credito || '',
     publicado: datos.publicado === true,
     paradas: Array.isArray(datos.paradas) ? datos.paradas.filter((p) => p && p.lat && p.lng) : [],
     fotosFrontMatter: Array.isArray(datos.fotos) ? datos.fotos : null,
@@ -314,6 +315,25 @@ export function cargarEntradas() {
         el script "node generar.js".
    fotos.json además aporta ancho/alto y versiones WebP si las creó el script.
    --------------------------------------------------------------------- */
+
+/* Fotos de Wikimedia Commons: en cualquier campo de foto puedes escribir
+   "commons:Nombre del archivo.jpg" (el nombre que sale en la página del archivo).
+   Commons sirve la foto ya redimensionada al ancho que le pidamos. */
+const PREFIJO_COMMONS = 'commons:';
+
+export function urlCommons(nombre, ancho = 1600) {
+  // encodeURIComponent no codifica el apóstrofo ('), que rompería url('…') en CSS
+  const archivo = encodeURIComponent(nombre.trim().replace(/ /g, '_')).replace(/'/g, '%27');
+  return `https://commons.wikimedia.org/wiki/Special:FilePath/${archivo}?width=${ancho}`;
+}
+
+/** Convierte una ruta de foto ("foto.jpg", "fotos/x.jpg", "https://…" o "commons:…") en una URL. */
+export function resolverImagen(ruta, carpeta = 'fotos', ancho = 1600) {
+  if (!ruta) return '';
+  const texto = String(ruta).trim();
+  if (texto.startsWith(PREFIJO_COMMONS)) return urlCommons(texto.slice(PREFIJO_COMMONS.length), ancho);
+  return texto.includes('/') ? texto : `${carpeta}/${texto}`;
+}
 
 const ES_IMAGEN = /\.(jpe?g|png|webp|avif|gif)$/i;
 const ES_VARIANTE = /-\d+\.webp$/i; // ej. foto-800.webp (generada por el script)
@@ -344,9 +364,15 @@ async function listarConGitHub(carpeta, repo) {
 }
 
 /** Convierte un nombre de archivo + metadatos en el objeto foto que usa la galería. */
-function construirFoto(carpeta, archivo, pie, meta) {
-  const src = archivo.includes('/') ? archivo : `${carpeta}/${archivo}`;
-  const foto = { src, pie: pie || '', ancho: meta?.ancho || null, alto: meta?.alto || null, srcsetWebp: '' };
+export function construirFoto(carpeta, archivo, pie, meta, credito = '') {
+  const src = resolverImagen(archivo, carpeta);
+  const foto = { src, pie: pie || '', credito: credito || '', ancho: meta?.ancho || null, alto: meta?.alto || null, srcsetWebp: '', srcset: '', fuente: '' };
+  if (archivo.startsWith(PREFIJO_COMMONS)) {
+    const nombre = archivo.slice(PREFIJO_COMMONS.length);
+    foto.srcset = `${urlCommons(nombre, 800)} 800w, ${urlCommons(nombre, 1600)} 1600w`;
+    foto.fuente = `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(nombre.trim().replace(/ /g, '_'))}`;
+    return foto;
+  }
   if (meta?.variantes?.length) {
     const base = src.replace(/\.[^.]+$/, '');
     foto.srcsetWebp = meta.variantes.map((w) => `${base}-${w}.webp ${w}w`).join(', ');
@@ -366,7 +392,7 @@ export async function cargarFotos(entrada, datosViaje) {
     return entrada.fotosFrontMatter
       .map((f) => (typeof f === 'string' ? { archivo: f } : f))
       .filter((f) => f && f.archivo)
-      .map((f) => construirFoto(carpeta, String(f.archivo), f.pie, meta[f.archivo]));
+      .map((f) => construirFoto(carpeta, String(f.archivo), f.pie, meta[f.archivo], f.credito));
   }
 
   // b) API de GitHub (solo para días publicados, para no gastar peticiones)

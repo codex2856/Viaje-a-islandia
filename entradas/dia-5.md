@@ -8,6 +8,11 @@ amanecer: "10:03"
 atardecer: "17:23"
 lo_mejor: "La vista desde la torre de Hallgrímskirkja con los tejados de colores nevados."
 resumen: "Hallgrímskirkja, Harpa, el Sun Voyager y vuelo de regreso."
+# Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
+# Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
+# (y borra portada_credito).
+portada: "commons:Hallgrímskirkja Reykjavík.jpg"
+portada_credito: "Foto: Mattias Hill · Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Hallgrímskirkja"

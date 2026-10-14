@@ -16,6 +16,11 @@ lo_mejor: "La primera bocanada de aire helado al salir de la terminal."
 resumen: "Llegada, coche de alquiler, compras y primera noche en la capital."
 # publicado: false → la tarjeta sale como «Próximamente» (con escarcha).
 # Cámbialo a true cuando termines de escribir el día.
+# Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
+# Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
+# (y borra portada_credito).
+portada: "commons:Iceland's Mid-Atlantic Ridge during snow.jpg"
+portada_credito: "Foto: Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Aeropuerto de Keflavík"

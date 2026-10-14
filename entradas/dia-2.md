@@ -8,6 +8,11 @@ amanecer: "10:05"
 atardecer: "17:08"
 lo_mejor: "Ver a Strokkur estallar contra un cielo rosa a mediodía."
 resumen: "Dos placas tectónicas, un géiser y una cascada que ruge bajo el hielo."
+# Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
+# Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
+# (y borra portada_credito).
+portada: "commons:Strokkur Eruption.JPG"
+portada_credito: "Foto: ConTheJedi · Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Þingvellir"
