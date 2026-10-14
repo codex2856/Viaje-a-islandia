@@ -38,6 +38,15 @@ function iniciarScroll() {
 
     if (cabecera) {
       cabecera.classList.toggle('cabecera--solida', y > 40);
+      // ¿Qué hay justo debajo de la cabecera? Si es una zona clara, texto oscuro
+      const debajo = document.elementFromPoint(innerWidth / 2, cabecera.offsetHeight + 4);
+      cabecera.classList.toggle('cabecera--clara', Boolean(debajo?.closest('.tema-claro')));
+      // Lo mismo para el menú inferior del móvil: miramos justo encima de él
+      const nav = document.querySelector('.nav-dias');
+      if (nav?.offsetHeight) {
+        const encima = document.elementFromPoint(innerWidth / 2, innerHeight - nav.offsetHeight - 4);
+        nav.classList.toggle('nav-dias--clara', Boolean(encima?.closest('.tema-claro')));
+      }
       // Solo escondemos si bajamos más de 8px (evita parpadeos) y no estamos arriba
       if (y > ultimoY + 8 && y > 160) cabecera.classList.add('cabecera--oculta');
       else if (y < ultimoY - 8 || y < 160) cabecera.classList.remove('cabecera--oculta');
