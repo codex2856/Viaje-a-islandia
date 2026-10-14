@@ -64,23 +64,12 @@
       ]
     },
     {
-      "categoria": "Equipo",
-      "items": [
-        "Crampones ligeros (microspikes)",
-        "Frontal con pilas de repuesto",
-        "Batería externa y cargador de coche",
-        "Trípode pequeño para la aurora",
-        "Gafas de sol (la nieve deslumbra)"
-      ]
-    },
-    {
       "categoria": "Documentos",
       "items": [
         "DNI o pasaporte",
         "Carnet de conducir",
         "Reserva del coche de alquiler",
-        "Reservas de hoteles y Lava Show",
-        "Tarjeta de crédito con PIN"
+        "Reservas de hoteles y Lava Show"
       ]
     }
   ],
@@ -96,12 +85,15 @@
     ],
     "moneda": "€",
     "costes": [
-      { "concepto": "Vuelos ida y vuelta", "previsto": 320, "real": null },
-      { "concepto": "Coche de alquiler (4×4, 5 días)", "previsto": 380, "real": null },
-      { "concepto": "Alojamiento (4 noches)", "previsto": 620, "real": null },
-      { "concepto": "Gasolina", "previsto": 140, "real": null },
-      { "concepto": "Comida y supermercado", "previsto": 260, "real": null },
-      { "concepto": "Secret Lagoon + Lava Show", "previsto": 95, "real": null }
+      { "concepto": "Vuelos ida y vuelta", "previsto": 160, "real": null },
+      { "concepto": "Hospedaje y coche de alquiler", "previsto": 330, "real": null },
+      { "concepto": "Lava Show en Vík", "previsto": 49, "real": null },
+      { "concepto": "Secret Lagoon", "previsto": 35, "real": null },
+      { "concepto": "Gasolina", "previsto": null, "real": null },
+      { "concepto": "Supermercado y comidas", "previsto": null, "real": null },
+      { "concepto": "Aparcamientos", "previsto": null, "real": null },
+      { "concepto": "Seguro de viaje", "previsto": null, "real": null },
+      { "concepto": "Recuerdos y caprichos", "previsto": null, "real": null }
     ],
     "consejos": [
       "Revisa road.is cada mañana antes de salir: en invierno cierran tramos sin aviso.",
@@ -116,7 +108,7 @@
       { "src": "commons:Seljalandsfoss (16467797491).jpg", "pie": "Seljalandsfoss en enero", "credito": "Foto: sergejf · CC BY-SA 2.0 · Wikimedia Commons" },
       { "src": "commons:Skogafoss in winter.jpg", "pie": "Skógafoss en invierno", "credito": "Foto: Martyn Smith · CC BY 2.0 · Wikimedia Commons" },
       { "src": "commons:Aurora-Igloo-Hella-Iceland.jpg", "pie": "Aurora en Hella", "credito": "Foto: Wikimedia Commons" },
-      { "src": "commons:Reynisfjara and Reynisdrangar, Iceland.jpg", "pie": "Reynisfjara y los Reynisdrangar", "credito": "Foto: Wikimedia Commons" },
+      { "src": "commons:Fountain geyser Strokkur, Haukadalur, Iceland.JPG", "pie": "Strokkur en plena erupción", "credito": "Foto: Wikimedia Commons" },
       { "src": "commons:Gullfoss waterfalls.jpg", "pie": "Gullfoss en invierno", "credito": "Foto: Wikimedia Commons" }
     ]
   }
