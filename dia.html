@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- El título y la descripción se actualizan con JS según el día -->
+  <title>Día del viaje · Islandia · 5 días de hielo y fuego</title>
+  <meta name="description" content="Una entrada del diario de viaje por Islandia: 30 de enero – 3 de febrero de 2027.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Islandia · 5 días de hielo y fuego">
+  <meta property="og:title" content="Islandia · 5 días de hielo y fuego">
+  <meta property="og:description" content="Una entrada del diario de viaje por Islandia, escrita cada noche desde el móvil.">
+  <meta property="og:image" content="https://codex2856.github.io/Viaje-a-islandia/fotos/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap"></noscript>
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <script type="module" src="js/dia.js"></script>
+</head>
+<body class="pagina-dia">
+  <a class="saltar" href="#texto">Saltar al texto</a>
+  <div class="progreso-lectura" aria-hidden="true"></div>
+
+  <header class="cabecera">
+    <a class="cabecera__marca" href="./" title="Volver al inicio">
+      <svg class="cabecera__logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 24 12 9l5 8 3-4 9 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      Ísland <span class="cabecera__anio">’27</span>
+    </a>
+    <button class="cabecera__menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+      <span class="visualmente-oculto">Abrir menú</span><span class="hamburguesa" aria-hidden="true"></span>
+    </button>
+    <nav id="menu-principal" class="cabecera__menu" aria-label="Secciones">
+      <a href="./#ruta">La ruta</a>
+      <a href="./#antes">Antes del viaje</a>
+      <a href="./#dias">Los 5 días</a>
+      <a href="./#resumen">Resumen</a>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <!-- Cabecera del día -->
+    <section class="dia-hero">
+      <div class="hero__cielo" aria-hidden="true">
+        <div class="estrellas estrellas--1"></div>
+        <div class="estrellas estrellas--2"></div>
+        <div class="aurora aurora--suave">
+          <span class="aurora__banda aurora__banda--1"></span>
+          <span class="aurora__banda aurora__banda--2"></span>
+          <span class="aurora__banda aurora__banda--3"></span>
+        </div>
+      </div>
+      <div class="dia-hero__foto" aria-hidden="true"><div class="dia-hero__foto-img" data-parallax="-0.25"></div></div>
+      <canvas class="hero__nieve" aria-hidden="true"></canvas>
+
+      <div class="dia-hero__contenido contenedor">
+        <span class="dia-hero__numero" aria-hidden="true" data-numero>·</span>
+        <div class="dia-hero__textos">
+          <p class="dia-hero__fecha" data-fecha>&nbsp;</p>
+          <h1 class="dia-hero__titulo" data-titulo>&nbsp;</h1>
+          <p class="dia-hero__lugar" data-lugar>&nbsp;</p>
+          <ul class="chips" data-chips></ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="contenedor dia-cuerpo">
+      <article id="texto" class="articulo" data-articulo></article>
+
+      <aside class="dia-lateral" aria-label="Datos del día">
+        <div class="panel vidrio dia-lateral__mapa">
+          <h2 class="subtitulo">Mapa del día</h2>
+          <div id="mapa-dia" class="mapa mapa--dia" role="region" aria-label="Mapa de las paradas del día"></div>
+          <ol class="paradas" data-paradas></ol>
+        </div>
+        <div class="panel vidrio dia-lateral__mejor" data-mejor hidden>
+          <p class="dia-tarjeta__etiqueta">Lo mejor del día</p>
+          <p class="dia-lateral__cita" data-mejor-texto></p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="contenedor dia-galeria" aria-labelledby="titulo-galeria" data-seccion-galeria>
+      <h2 id="titulo-galeria" class="subtitulo subtitulo--centro">Galería</h2>
+      <div class="galeria" id="galeria"></div>
+    </section>
+
+    <nav class="contenedor anterior-siguiente" aria-label="Otros días" data-anterior-siguiente></nav>
+  </main>
+
+  <footer class="pie pie--simple">
+    <div class="contenedor pie__fila">
+      <a class="pie__github" href="https://github.com/codex2856" rel="me noopener" target="_blank">github.com/codex2856</a>
+      <p class="pie__copy">© <span data-anio>2027</span> · Ísland</p>
+    </div>
+  </footer>
+
+  <nav class="nav-dias" aria-label="Días del viaje"></nav>
+</body>
+</html>

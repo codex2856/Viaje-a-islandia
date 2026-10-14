@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://codex2856.github.io/Viaje-a-islandia/sitemap.xml

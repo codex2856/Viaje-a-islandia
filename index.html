@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Islandia · 5 días de hielo y fuego</title>
+  <meta name="description" content="Diario de viaje por Islandia del 30 de enero al 3 de febrero de 2027: Círculo Dorado, cascadas de la costa sur, la playa negra de Vík, lava y Reikiavik.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://codex2856.github.io/Viaje-a-islandia/">
+
+  <!-- Open Graph: la "tarjeta" que se ve al compartir el enlace (WhatsApp, Telegram, X…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Islandia · 5 días de hielo y fuego">
+  <meta property="og:title" content="Islandia · 5 días de hielo y fuego">
+  <meta property="og:description" content="Glaciares, cascadas, arena negra y lava. Un diario escrito cada noche desde el fin del mundo.">
+  <meta property="og:url" content="https://codex2856.github.io/Viaje-a-islandia/">
+  <meta property="og:image" content="https://codex2856.github.io/Viaje-a-islandia/fotos/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Aurora boreal sobre montañas nevadas con el título Islandia, 5 días de hielo y fuego">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Fuentes: se cargan sin bloquear el primer pintado (truco media="print") -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap"></noscript>
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <script type="module" src="js/inicio.js"></script>
+</head>
+<body class="pagina-inicio">
+  <a class="saltar" href="#ruta">Saltar al contenido</a>
+  <div class="progreso-lectura" aria-hidden="true"></div>
+
+  <!-- ===================== MENÚ SUPERIOR ===================== -->
+  <header class="cabecera">
+    <a class="cabecera__marca" href="./">
+      <svg class="cabecera__logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 24 12 9l5 8 3-4 9 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      Ísland <span class="cabecera__anio">’27</span>
+    </a>
+    <button class="cabecera__menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+      <span class="visualmente-oculto">Abrir menú</span><span class="hamburguesa" aria-hidden="true"></span>
+    </button>
+    <nav id="menu-principal" class="cabecera__menu" aria-label="Secciones">
+      <a href="#ruta">La ruta</a>
+      <a href="#antes">Antes del viaje</a>
+      <a href="#dias">Los 5 días</a>
+      <a href="#resumen">Resumen</a>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <!-- ===================== PORTADA (HERO) ===================== -->
+    <section class="hero" aria-labelledby="titulo-principal">
+      <!-- Cielo: estrellas + aurora hechas con CSS -->
+      <div class="hero__cielo" aria-hidden="true">
+        <div class="estrellas estrellas--1"></div>
+        <div class="estrellas estrellas--2"></div>
+        <div class="estrellas estrellas--3"></div>
+        <div class="aurora">
+          <span class="aurora__banda aurora__banda--1"></span>
+          <span class="aurora__banda aurora__banda--2"></span>
+          <span class="aurora__banda aurora__banda--3"></span>
+          <span class="aurora__banda aurora__banda--4"></span>
+        </div>
+      </div>
+      <!-- Si existe fotos/portada.jpg, JS la pone aquí -->
+      <div class="hero__foto" aria-hidden="true"></div>
+
+      <canvas class="hero__nieve" aria-hidden="true"></canvas>
+
+      <!-- Montañas en 4 capas: las lejanas se mueven más despacio (parallax) -->
+      <div class="montanas" aria-hidden="true">
+        <svg class="montana montana--1" data-parallax="-0.45" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <linearGradient id="nieve-lejana" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#9cc3d6"/><stop offset=".28" stop-color="#2a4257"/><stop offset="1" stop-color="#142231"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#nieve-lejana)" d="M0 260 80 200l60 30 90-110 60 50 70-60 70 70 90-90 80 70 80-30 80 60 90-110 80 70 80-30 90 70 80-90 80 60 80-30 100 50v220H0Z"/>
+        </svg>
+        <svg class="montana montana--2" data-parallax="-0.3" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <linearGradient id="nieve-media" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5d8096"/><stop offset=".3" stop-color="#1a2b3a"/><stop offset="1" stop-color="#0f1a25"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#nieve-media)" d="m0 300 100-60 70 30 90-70 80 50 80-60 80 70 100-50 100 60 90-50 90 40 80-60 90 50 100-40 90 60 90-40 110 30v140H0Z"/>
+        </svg>
+        <svg class="montana montana--3" data-parallax="-0.16" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+          <path fill="#0c151e" d="M0 330q120-50 240-10t240-10 240 20 240-30 240 30 240-20v110H0Z"/>
+        </svg>
+        <svg class="montana montana--4" data-parallax="-0.05" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+          <path fill="#0b0f14" d="M0 370q200-30 400-5t400-10 400 15 240-20v50H0Z"/>
+        </svg>
+      </div>
+      <div class="niebla" aria-hidden="true"><span></span><span></span></div>
+
+      <div class="hero__contenido">
+        <p class="hero__fechas">
+          <span>30 ene — 3 feb 2027</span>
+          <span class="hero__coordenadas">64°08′N · 21°56′O</span>
+        </p>
+        <h1 id="titulo-principal" class="hero__titulo" data-letras aria-label="Islandia · 5 días de hielo y fuego">
+          <span class="hero__linea hero__linea--grande">Islandia</span>
+          <span class="hero__linea hero__linea--cursiva">5 días de hielo y&nbsp;fuego</span>
+        </h1>
+        <p class="hero__subtitulo">Glaciares, cascadas, arena negra y lava. Un diario escrito cada noche desde el fin del mundo.</p>
+
+        <!-- Cuenta atrás (JS la rellena; cambia a "Día X de 5" durante el viaje) -->
+        <div class="cuenta" aria-live="polite">
+          <p class="cuenta__etiqueta">Despegamos en</p>
+          <div class="cuenta__cajas">
+            <div class="cuenta__caja"><span class="cuenta__num" data-cuenta="d">--</span><span class="cuenta__unidad">días</span></div>
+            <div class="cuenta__caja"><span class="cuenta__num" data-cuenta="h">--</span><span class="cuenta__unidad">horas</span></div>
+            <div class="cuenta__caja"><span class="cuenta__num" data-cuenta="m">--</span><span class="cuenta__unidad">min</span></div>
+            <div class="cuenta__caja"><span class="cuenta__num" data-cuenta="s">--</span><span class="cuenta__unidad">seg</span></div>
+          </div>
+        </div>
+
+        <a class="boton boton--aurora" href="#ruta">
+          <span>Empezar el viaje</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ===================== MAPA DE LA RUTA ===================== -->
+    <section id="ruta" class="seccion seccion--ruta" aria-labelledby="titulo-ruta">
+      <div class="contenedor">
+        <header class="seccion__cabecera" data-reveal>
+          <p class="antetitulo"><span>01</span> La ruta</p>
+          <h2 id="titulo-ruta" class="seccion__titulo">Un arco de hielo por la <em>costa sur</em></h2>
+          <p class="seccion__intro">De Keflavík al Círculo Dorado, por las cascadas del sur hasta la arena negra de Vík, y de vuelta a Reikiavik. Pulsa cada parada para ver su día.</p>
+        </header>
+
+        <div class="mapa-marco vidrio" data-reveal>
+          <div id="mapa-ruta" class="mapa mapa--ruta" role="region" aria-label="Mapa interactivo de la ruta"></div>
+          <ul class="leyenda" aria-label="Leyenda del mapa">
+            <li><span class="leyenda__linea"></span>Ruta en coche</li>
+            <li><span class="leyenda__punto"></span>Parada confirmada</li>
+            <li><span class="leyenda__punto leyenda__punto--pendiente"></span>Por confirmar</li>
+          </ul>
+        </div>
+
+        <dl class="cifras" data-reveal>
+          <div><dt>Kilómetros</dt><dd data-cifra="km">≈ 700</dd></div>
+          <div><dt>Paradas</dt><dd data-cifra="paradas">—</dd></div>
+          <div><dt>Horas de luz</dt><dd data-cifra="luz">—</dd></div>
+          <div><dt>Días</dt><dd>5</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===================== ANTES DEL VIAJE ===================== -->
+    <section id="antes" class="seccion seccion--antes" aria-labelledby="titulo-antes">
+      <div class="contenedor">
+        <header class="seccion__cabecera" data-reveal>
+          <p class="antetitulo"><span>02</span> Antes del viaje</p>
+          <h2 id="titulo-antes" class="seccion__titulo">Preparar el <em>invierno</em></h2>
+        </header>
+
+        <div class="antes-rejilla">
+          <div class="antes-columna">
+            <h3 class="subtitulo" data-reveal>Itinerario</h3>
+            <ol class="linea-tiempo" id="linea-tiempo"></ol>
+          </div>
+
+          <div class="antes-columna">
+            <article class="panel vidrio" data-reveal>
+              <h3 class="subtitulo">Horas de luz</h3>
+              <p class="panel__nota">Amanecer y atardecer previstos. Islandia en febrero: unas 7 horas de sol.</p>
+              <div class="luz" id="horas-luz" role="list"></div>
+            </article>
+
+            <article class="panel vidrio" data-reveal>
+              <div class="panel__fila">
+                <h3 class="subtitulo">Qué llevar</h3>
+                <p class="contador-maleta" id="contador-maleta" aria-live="polite"></p>
+              </div>
+              <div class="maleta" id="maleta"></div>
+            </article>
+
+            <article class="panel vidrio" data-reveal>
+              <h3 class="subtitulo">Enlaces útiles</h3>
+              <ul class="enlaces" id="enlaces"></ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== LOS 5 DÍAS ===================== -->
+    <section id="dias" class="seccion seccion--dias" aria-labelledby="titulo-dias">
+      <div class="contenedor">
+        <header class="seccion__cabecera" data-reveal>
+          <p class="antetitulo"><span>03</span> El diario</p>
+          <h2 id="titulo-dias" class="seccion__titulo">Los <em>5 días</em></h2>
+          <p class="seccion__intro">Una entrada por noche, escrita desde el móvil con los dedos todavía fríos.</p>
+        </header>
+        <div class="dias" id="lista-dias"></div>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMEN FINAL ===================== -->
+    <section id="resumen" class="seccion seccion--resumen" aria-labelledby="titulo-resumen">
+      <div class="contenedor">
+        <header class="seccion__cabecera" data-reveal>
+          <p class="antetitulo"><span>04</span> Resumen final</p>
+          <h2 id="titulo-resumen" class="seccion__titulo">Lo que me <em>llevo</em></h2>
+          <p class="seccion__intro" id="resumen-intro"></p>
+        </header>
+
+        <div class="lo-mejor" id="resumen-lo-mejor"></div>
+
+        <div class="resumen-rejilla">
+          <article class="panel vidrio" data-reveal>
+            <h3 class="subtitulo">Costes reales</h3>
+            <div class="tabla-envoltorio" id="tabla-costes"></div>
+          </article>
+          <article class="panel vidrio" data-reveal>
+            <h3 class="subtitulo">Consejos</h3>
+            <ol class="consejos" id="consejos"></ol>
+          </article>
+        </div>
+
+        <h3 class="subtitulo subtitulo--centro" data-reveal>Top de fotos</h3>
+        <div class="galeria galeria--top" id="top-fotos"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== PIE DE PÁGINA ===================== -->
+  <footer class="pie">
+    <div class="contenedor pie__rejilla">
+      <div>
+        <p class="pie__marca">Islandia <em>’27</em></p>
+        <p class="pie__texto">Un diario de viaje hecho a mano con HTML, CSS y JavaScript.</p>
+        <a class="pie__github" href="https://github.com/codex2856" rel="me noopener" target="_blank">
+          <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>
+          github.com/codex2856
+        </a>
+        <p class="pie__copy">© <span data-anio>2027</span> · Ísland</p>
+      </div>
+      <div class="pie__mapa-marco">
+        <p class="pie__etiqueta">Ruta recorrida</p>
+        <div id="mini-mapa" class="mapa mapa--mini" role="img" aria-label="Mini mapa con la ruta recorrida"></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Menú inferior en móvil: 5 puntos, uno por día -->
+  <nav class="nav-dias" aria-label="Días del viaje"></nav>
+</body>
+</html>

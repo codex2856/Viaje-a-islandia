@@ -1,0 +1,14 @@
+{
+  "name": "viaje-a-islandia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blog estático del viaje a Islandia (30 ene – 3 feb 2027). HTML, CSS y JS sin frameworks.",
+  "type": "module",
+  "scripts": {
+    "servir": "npx --yes http-server -c-1 -p 8080 .",
+    "fotos": "node generar.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
