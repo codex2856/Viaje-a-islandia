@@ -11,8 +11,8 @@ resumen: "Reynisfjara, el mirador de Dyrhólaey y paseo nocturno por Reikiavik."
 # Foto de cabecera y de fondo de la tarjeta. Ahora es una foto de ejemplo de
 # Wikimedia Commons; cámbiala por una tuya, p. ej.: portada: "IMG_1234.jpg"
 # (y borra portada_credito).
-portada: "commons:Reynisfjara-66-Basalt-2018-gje.jpg"
-portada_credito: "Foto: Gerd Eichmann · Wikimedia Commons"
+portada: "commons:Reynisfjara and Reynisdrangar, Iceland.jpg"
+portada_credito: "Foto: Wikimedia Commons"
 publicado: false
 paradas:
   - nombre: "Playa de Reynisfjara"
