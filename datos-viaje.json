@@ -87,11 +87,11 @@
     "costes": [
       { "concepto": "Vuelos ida y vuelta", "previsto": 160, "real": null },
       { "concepto": "Hospedaje y coche de alquiler", "previsto": 330, "real": null },
+      { "concepto": "Lava Show en Vík", "previsto": 49, "real": null },
+      { "concepto": "Secret Lagoon", "previsto": 35, "real": null },
       { "concepto": "Gasolina", "previsto": null, "real": null },
       { "concepto": "Supermercado y comidas", "previsto": null, "real": null },
-      { "concepto": "Secret Lagoon (aprox.)", "previsto": 30, "real": null },
-      { "concepto": "Lava Show en Vík (aprox.)", "previsto": 50, "real": null },
-      { "concepto": "Aparcamientos: Þingvellir, cascadas, Reynisfjara (aprox.)", "previsto": 30, "real": null },
+      { "concepto": "Aparcamientos", "previsto": null, "real": null },
       { "concepto": "Seguro de viaje", "previsto": null, "real": null },
       { "concepto": "Recuerdos y caprichos", "previsto": null, "real": null }
     ],
