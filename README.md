@@ -161,7 +161,7 @@ Si un nombre de Commons está mal escrito, la foto simplemente no aparece (no se
 
 ## El mapa ilustrado
 
-El mapa de «El viaje» es una ilustración (`fotos/mapa-ilustrado.jpg`, hecha con Gemini). La ruta
+El mapa de «El viaje» es una ilustración (`fotos/mapa-ilustrado.jpg`, hecha con Gemini). Para que el zoom no pierda definición hay una versión ampliada 3× con los bordes redibujados (`fotos/mapa-ilustrado-3x.webp`), que se descarga solo cuando el mapa aparece en pantalla. La ruta
 y los puntos se dibujan encima con las **coordenadas reales** de las paradas de cada día: en
 `datos-viaje.json` → `mapa_ilustrado.transformacion` está la fórmula que convierte latitud y
 longitud en píxeles de esa imagen. Si añades una parada en un `dia-N.md`, aparece sola en el mapa.

@@ -48,6 +48,7 @@
     "_nota": "Mapa dibujado de la pestaña El viaje. 'transformacion' convierte latitud/longitud en píxeles de la imagen: x = a·lng + b·lat + c (igual para y). Se calculó con puntos de referencia del dibujo (lago de Þingvellir, glaciares, Reykjanes, Vík). Si cambias la imagen, hay que recalcularla.",
     "imagen": "fotos/mapa-ilustrado.jpg",
     "imagen_webp": "fotos/mapa-ilustrado.webp",
+    "imagen_hd": "fotos/mapa-ilustrado-3x.webp",
     "ancho": 1376,
     "alto": 768,
     "transformacion": {

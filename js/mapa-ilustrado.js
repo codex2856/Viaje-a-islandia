@@ -88,7 +88,15 @@ export function crearMapaIlustrado(elemento, entradas, datos, { mini = false } =
     'aria-label': 'Mapa ilustrado de Islandia con la ruta del viaje',
   });
   svg.append(nodo('rect', { x: -2000, y: -2000, width: ancho + 4000, height: alto + 4000, fill: '#0b0f14' }));
-  svg.append(nodo('image', { href: config.imagen, x: 0, y: 0, width: ancho, height: alto, preserveAspectRatio: 'none' }));
+  // Primero la imagen ligera; la de alta definición (3×) se carga al ir a hacer zoom
+  const imagen = nodo('image', { href: config.imagen_webp || config.imagen, x: 0, y: 0, width: ancho, height: alto, preserveAspectRatio: 'none' });
+  svg.append(imagen);
+  const cargarHD = () => {
+    if (!config.imagen_hd || mini) return;
+    const hd = new Image();
+    hd.onload = () => imagen.setAttribute('href', config.imagen_hd);
+    hd.src = config.imagen_hd;
+  };
 
   // Ruta: un halo ancho y difuso + la línea principal
   const d = ruta.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
@@ -293,6 +301,7 @@ export function crearMapaIlustrado(elemento, entradas, datos, { mini = false } =
   const obs = new IntersectionObserver(async ([e]) => {
     if (!e.isIntersecting) return;
     obs.disconnect();
+    cargarHD();
     elemento.classList.add('mapa-ilustrado--listo');
     await animarVista(vistaRuta(), 2200);
     for (const camino of [linea, halo]) {
